@@ -1,0 +1,1771 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>MerchantAPI</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<p>﻿# Merchant API</p>
+<h2 id="-"><strong>介绍</strong></h2>
+<p>Merchant API是对Merchant模块进行的功能封装。提供一些通用的模板，供开发者使用。目前有以下三种模板：</p>
+<h5 id="-"><strong>普通销售模板：</strong>  销售者创建资产，然后将资产授权给托管合约，进行上架销售。消费者通过托管合约购买资产。托管合约完成销售者资产与消费者资金进行交换的过程。解决双方信任问题。</h5>
+<h5 id="-"><strong>收费活动模板：</strong> 活动发起者创建一次活动，发行一定数量的活动门票。然后将门票授权给托管合约进行上架出售。活动参与在通过托管合约购买活动门票，参与者付出的资金由托管合约进行保管。当活动结束后，活动发起者才能获得活动门票的资金。</h5>
+<h5 id="-id-"><strong>质押活动模板：</strong> 活动发起者创建一次活动，发行一定数量的活动门票。然后将门票授权给托管合约进行上架出售。活动参与在通过托管合约购买活动门票，参与者付出的资金由托管合约进行保管。活动开始前活动发起者校验到场者的门票id，并返回其支付的押金。未到场者押金在活动结束后转移到活动发起者地址。</h5>
+<p>使用Merchant API快速进行开发，请阅读以下文档</p>
+<h2 id="build"><strong>Build</strong></h2>
+<pre><code>//公用参数
+String node = &quot;http://47.105.149.174:8545&quot;;//节点地址
+BigInteger gasPrice = BigInteger.valueOf(1000000000);
+BigInteger gasLimit = BigInteger.valueOf(8000000);
+
+//普通销售模板
+MerchantService ethMerchantService = new MerchantServiceImpl(&quot;DMA_TESTNET&quot;,nodeurl);
+
+//收费活动模板
+ChargeActivityServiceImpl chargeActivityService = new ChargeActivityServiceImpl(&quot;DMA_TESTNET&quot;, nodeurl);
+
+//质押活动模板
+PledgeActivityService pledgeActivityService = new PledgeActivityServiceImpl(&quot;DMA_TESTNET&quot;,nodeurl);
+
+
+</code></pre><h2 id="-"><strong>目录</strong></h2>
+<ul>
+<li><a href="#1-普通销售模板">1. 普通销售模板</a><ul>
+<li><a href="#1-1-创建合约">创建合约</a></li>
+<li><a href="#1-3-资产上架">资产上架</a></li>
+<li><a href="#1-4-资产下架">资产下架</a></li>
+<li><a href="#1-5-创建订单">创建订单</a></li>
+<li><a href="#1-6-查询指定tokenid上架信息">查询指定tokenid上架信息</a></li>
+</ul>
+</li>
+<li><a href="#2-收费活动模板">2. 收费活动模板</a><ul>
+<li><a href="#2-1-创建合约">创建合约</a></li>
+<li><a href="#2-3-资产上架">资产上架</a></li>
+<li><a href="#2-4-资产下架">资产下架</a></li>
+<li><a href="#2-5-创建订单">创建订单</a></li>
+<li><a href="#2-6-查询指定tokenid上架信息">查询指定tokenid上架信息</a></li>
+<li><a href="#2-7-结束活动">结束活动</a></li>
+<li><a href="#2-8-获取活动结束时间">获取活动结束时间</a> </li>
+</ul>
+</li>
+<li><a href="#3-质押活动模板">3. 质押活动模板</a><ul>
+<li><a href="#3-1-创建合约">创建合约</a></li>
+<li><a href="#3-3-资产上架">资产上架</a></li>
+<li><a href="#3-4-资产下架">资产下架</a></li>
+<li><a href="#3-5-创建订单">创建订单</a></li>
+<li><a href="#3-6-查询指定tokenid上架信息">查询指定tokenid上架信息</a></li>
+<li><a href="#3-7-结束活动">结束活动</a></li>
+<li><a href="#3-8-获取活动结束时间">获取活动结束时间</a> </li>
+<li><a href="#3-9-验证签到后退还押金">验证签到后退还押金</a></li>
+<li><a href="#3-10-发起方主动退款">发起方主动退款</a> </li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="api"><strong>API</strong></h2>
+<h3 id="1-">1. 普通销售模板</h3>
+<h4 id="1-1-">1. 1 创建合约</h4>
+<ul>
+<li>方法名 ：<code>deploy()</code></li>
+</ul>
+<p>参数说明:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">用户私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>    /*
+    {
+    &quot;code&quot;: 0,
+    &quot;data&quot;: &quot;0xac047d394e92061ba0c3ceeab7e658264ea13d98&quot;,
+    &quot;map&quot;: {},
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;success&quot;: true
+}
+    */
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void deploy() throws Exception {
+        String privateKey = &quot;afac4908cd6230baa24ef265e5609e9d0908989582779355b307f86a1e6db64d&quot;;
+        String name = &quot;Test merchant&quot;;
+        String symbol = &quot;TM&quot;;
+        String _metadata = &quot;TestData&quot;;
+        JsonResult&lt;DeployResult&gt; jsonResult = merchantService.deploy(privateKey, gasPrice, gasLimit);
+        System.out.println(JSON.toJSONString(jsonResult));
+    }
+</code></pre><h4 id="1-3-">1. 3 资产上架</h4>
+<ul>
+<li>方法名 ：<code>onSales()</code></li>
+</ul>
+<p>参数说明:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">assetAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">map</td>
+<td style="text-align:center">Map</td>
+<td style="text-align:center">[{1000000001: 1.0 }]</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产拥有者</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>/*{
+    &quot;code&quot;: 0,
+    &quot;data&quot;: {
+        &quot;saveApprove&quot;: [&quot;0x799f75c8997471725c00d9c5a976745c33c9cdfb2b142b058944035483f4e012&quot;],
+        &quot;approve&quot;: [&quot;0xd8a33f82422243277b162a5444a565440c652dea9f624ba58ea3506596a74eae&quot;]
+    },
+    &quot;map&quot;: {},
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;success&quot;: true
+}*/
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>      @Test
+    public void onSales() throws Exception {
+
+        List&lt;Long&gt; longs = Arrays.asList(8672524357L,5584566998L,9767553216L,9913677584L,6355617671L);
+
+        String assetAddress = &quot;0xbc1Bea10F80f4EA26d9344F0e7c588502539Ea2A&quot;;
+        String trustAddress = &quot;0xac047d394e92061ba0c3ceeab7e658264ea13d98&quot;;
+        Map&lt;BigInteger, BigDecimal&gt; list = new HashMap&lt;&gt;();
+
+        for (Long aLong : longs) {
+            list.put(BigInteger.valueOf(aLong ) , BigDecimal.ONE) ;
+        }
+        String owner = credentials.getAddress();
+        JsonResult&lt;Map&lt;String, List&lt;String&gt;&gt;&gt; map = merchantService.onSales(trustAddress ,assetAddress, privateKey, gasPrice, gasLimit, list, owner);
+        System.out.println(JSON.toJSONString(map));
+    }
+</code></pre><h4 id="1-4-">1. 4 资产下架</h4>
+<ul>
+<li><p>方法名 ：<code>offSales（）</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenids</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center">资产id</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>    /*{
+    &quot;code&quot;: 0,
+    &quot;data&quot;: [&quot;0x1c93d141447c7f1c2a356e31251ca3616c3131185a01a4437ddecd2291d19bcc&quot;],
+    &quot;map&quot;: {},
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;success&quot;: true
+}*/
+</code></pre><h4 id="1-5-">1. 5 创建订单</h4>
+<ul>
+<li>方法名 ：<code>createOrder()</code></li>
+</ul>
+<blockquote>
+<p>  方法说明：
+  创建订单操作先执行代币合约的 <code>approve()</code>授权操作，再执行平台托管合约的<code>transfer()</code>交易操作</p>
+</blockquote>
+<ul>
+<li>参数说明</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">平台托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenIdList</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center">资产id数组</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">sumPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">总金额</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产拥有者</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>    /*{
+    &quot;code&quot;: 0,
+    &quot;data&quot;: &quot;0xf049cbe05dd14361bc7b2c01d79be0eb97530e6c249c43f6db7e352c7f61ba15&quot;,
+    &quot;map&quot;: {},
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;success&quot;: true
+}*/
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>     @Test
+    public void createOrder() throws Exception {
+        String assetAddress = &quot;0xbc1Bea10F80f4EA26d9344F0e7c588502539Ea2A&quot;;
+        String trustAddress = &quot;0xac047d394e92061ba0c3ceeab7e658264ea13d98&quot;;
+        List&lt;Long&gt; longs = Arrays.asList(8672524357L,5584566998L,9767553216L,9913677584L,6355617671L);
+        BigDecimal sumPrice =BigDecimal.valueOf(longs.size());
+
+        List&lt;BigInteger&gt; tokenIds   = new ArrayList&lt;&gt;( );
+        for (Long aLong : longs) {
+            tokenIds.add(BigInteger.valueOf(aLong ) ) ;
+        }
+
+        JsonResult&lt;String&gt; map = merchantService.createOrder(trustAddress, assetAddress, privateKeyB, gasPrice, gasLimit, tokenIds, sumPrice, credentials.getAddress());
+
+        System.out.println(JSON.toJSONString(map));
+    }
+
+</code></pre><h4 id="1-6-tokenid-">1. 6 查询指定tokenid上架信息</h4>
+<ul>
+<li><p>方法名 ：<code>getApproveInfo()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>{
+    &quot;code&quot;: 0,
+    &quot;data&quot;: {
+        &quot;owner&quot;: &quot;0xd07de12d15e686c013666fb9c47f23c5997faa21&quot;,
+        &quot;tokenid&quot;: 8672524357,
+        &quot;value&quot;: &quot;1&quot;
+    },
+    &quot;map&quot;: {},
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;success&quot;: true
+}
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test public  void getApproveInfo(){
+        String assetAddress = &quot;0xbc1Bea10F80f4EA26d9344F0e7c588502539Ea2A&quot;;
+        String trustAddress = &quot;0xac047d394e92061ba0c3ceeab7e658264ea13d98&quot;;
+        JsonResult&lt;PlatFormApproveInfo&gt; approveInfo = merchantService.getApproveInfo(trustAddress, assetAddress, BigInteger.valueOf(8672524357L));
+        System.out.println(&quot;approveInfo = &quot; + approveInfo);
+    }
+</code></pre><h3 id="2-">2. 收费活动模板</h3>
+<h4 id="2-1-">2. 1 创建合约</h4>
+<ul>
+<li>方法名 ：<code>deploy()</code></li>
+</ul>
+<p>参数说明:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">用户私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">name</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约名称</td>
+</tr>
+<tr>
+<td style="text-align:center">symbol</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约简称</td>
+</tr>
+<tr>
+<td style="text-align:center">metaData</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">描述信息</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">endTime</td>
+<td style="text-align:center">long</td>
+<td style="text-align:center">活动结束时间戳</td>
+</tr>
+</tbody>
+</table>
+<p>endTime</p>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>    /*{
+    &quot;code&quot;: &quot;0&quot;,
+    &quot;data&quot;: {
+        &quot;trustAddress&quot;: &quot;0x919f05c5845e67edd5f7f627f9340c61405d1c39&quot;,//平台托管合约地址
+        &quot;assetAddress&quot;: &quot;0x41c73a10c9bf866e413d93a2d8ebf2a2a9d533ca&quot;//资产合约地址
+    },
+    &quot;map&quot;: {},
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;success&quot;: true
+}*/
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void deploy() throws Exception {
+        String privateKey = &quot;afac4908cd6230baa24ef265e5609e9d0908989582779355b307f86a1e6db64d&quot;;
+        String name = &quot;Test merchant&quot;;
+        String symbol = &quot;TM&quot;;
+        String _metadata = &quot;TestData&quot;;
+        long endTime = 1564140675;
+        JsonResult&lt;DeployResult&gt; jsonResult = chargeActivityService.deploy(privateKey, gasPrice, gasLimit, name, symbol, _metadata);
+        System.out.println(JSON.toJSONString(jsonResult));
+    }
+</code></pre><h4 id="2-2-">2. 2 发布资产</h4>
+<ul>
+<li>方法名 ：<code>mint()</code></li>
+</ul>
+<p>参数说明:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">assetAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产拥有者</td>
+</tr>
+<tr>
+<td style="text-align:center">metaData</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">自定义信息</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenIdList</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center">资产Id数组</td>
+</tr>
+<tr>
+<td style="text-align:center">canTrans</td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">是否可转移</td>
+</tr>
+<tr>
+<td style="text-align:center">canBurn</td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">是否可销毁</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>    /*{
+        &quot;code&quot;: &quot;0&quot;,
+        &quot;data&quot;: &quot;0xe4843ccebe183be09e5d306f77eecea42ac2e1e443782cfde952b9a56a5596e7&quot;,
+        &quot;map&quot;: {},
+        &quot;msg&quot;: &quot;操作成功&quot;,
+        &quot;success&quot;: true
+    }*/
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void mint() throws Exception {
+        String assetAddress = &quot;0x41c73a10c9bf866e413d93a2d8ebf2a2a9d533ca&quot;;
+        String privateKey = &quot;afac4908cd6230baa24ef265e5609e9d0908989582779355b307f86a1e6db64d&quot;;
+        String to = &quot;0xB6901ccE4e9643e73B5E43948CAf888E8BDF9453&quot;;
+        String _metadata = &quot;TestData&quot;;
+        List&lt;BigInteger&gt; list=new ArrayList&lt;&gt;();
+        list.add(BigInteger.valueOf(210001));
+        list.add(BigInteger.valueOf(210002));
+        list.add(BigInteger.valueOf(210003));
+        list.add(BigInteger.valueOf(210004));
+        JsonResult&lt;String&gt; map = chargeActivityService.mint(assetAddress,privateKey, gasPrice, gasLimit, to, _metadata,list,true,true);
+        System.out.println(JSON.toJSONString(map));
+
+    }
+</code></pre><h4 id="2-3-">2. 3 资产上架</h4>
+<ul>
+<li>方法名 ：<code>onSales()</code></li>
+</ul>
+<p>参数说明:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">assetAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenIdList</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center">资产id数组</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">price</td>
+<td style="text-align:center">BigDecimal</td>
+<td style="text-align:center">上架单价</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产拥有者</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>/*{
+        &quot;code&quot;: &quot;0&quot;,
+        &quot;data&quot;: {
+            &quot;approveTxId&quot;: &quot;0x3964e6f84eda2abe381aa7f9dcf357cf91346ab639b5e78e7e6d4762300edb4e&quot;,//资产合约授权返回hash
+            &quot;saveApproveTxId&quot;: &quot;0x1dd86d2a15bf5d3c8a9fbf33c2a2b0dd571397e74f112a6736307c20a5b86358&quot;//平台托管合约上架返回hash
+        },
+        &quot;map&quot;: {},
+        &quot;msg&quot;: &quot;操作成功&quot;,
+            &quot;success&quot;: true
+    }*/
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void onSales() throws Exception {
+        String assetAddress = &quot;0x41c73a10c9bf866e413d93a2d8ebf2a2a9d533ca&quot;;
+        String trustAddress = &quot;0x919f05c5845e67edd5f7f627f9340c61405d1c39&quot;;
+        String privateKey = &quot;afac4908cd6230baa24ef265e5609e9d0908989582779355b307f86a1e6db64d&quot;;
+        String owner = &quot;0xB6901ccE4e9643e73B5E43948CAf888E8BDF9453&quot;;
+        List&lt;BigInteger&gt; list=new ArrayList&lt;&gt;();
+        list.add(BigInteger.valueOf(390001));
+        list.add(BigInteger.valueOf(390002));
+        list.add(BigInteger.valueOf(390003));
+        list.add(BigInteger.valueOf(390004));
+        JsonResult&lt;OnSaleResult&gt; map = chargeActivityService.onSales( assetAddress,  trustAddress,  privateKey,  gasPrice,  gasLimit,  list, new BigDecimal(&quot;10&quot;),  owner);
+       System.out.println(JSON.toJSONString(map));
+    }
+</code></pre><h4 id="2-4-">2. 4 资产下架</h4>
+<ul>
+<li><p>方法名 ：<code>offSales（）</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenids</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center">资产id</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>    /* {
+        &quot;code&quot;: &quot;0&quot;,
+        &quot;data&quot;: &quot;0x4d645a3465be5bb54d1ff2aaabbcf49040e715eb8988e434f75e01bc31fed8ea&quot;,//hash
+        &quot;map&quot;: {},
+        &quot;msg&quot;: &quot;操作成功&quot;,
+        &quot;success&quot;: true
+    }*/
+</code></pre><h4 id="2-5-">2. 5 创建订单</h4>
+<ul>
+<li>方法名 ：<code>createOrder()</code></li>
+</ul>
+<blockquote>
+<p>  方法说明：
+  创建订单操作先执行代币合约的 <code>approve()</code>授权操作，再执行平台托管合约的<code>transfer()</code>交易操作</p>
+</blockquote>
+<ul>
+<li>参数说明</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">平台托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenIdList</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center">资产id数组</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">sumPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">总金额</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产拥有者</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>    /*{
+        &quot;code&quot;: &quot;0&quot;,
+        &quot;data&quot;: {
+        &quot;transferTxId&quot;: &quot;0xd1dcd4fc74d8980fde8073fc939ee4bcafd584a0987e5bdaac2917c008a4b7cb&quot;,//平台托管合约交易返回hash
+        &quot;approveTxId&quot;: &quot;0xf69606bc7c25ee450777a7d7836141ed5f8ef4bf1fb30456cf45724b9f60e6f1&quot;//代币授权返回hash
+        },
+        &quot;map&quot;: {},
+        &quot;msg&quot;: &quot;操作成功&quot;,
+        &quot;success&quot;: true
+    }*/
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void createOrder() throws Exception {
+        String trustAddress = &quot;0x919f05c5845e67edd5f7f627f9340c61405d1c39&quot;;
+        String privateKey = &quot;b6c77d007c04e1b2f1bf8e2f8eab8c012f5a4044ca09f02980ae79b148c921e0&quot;;
+        String owner = &quot;0xB6901ccE4e9643e73B5E43948CAf888E8BDF9453&quot;;
+        List&lt;BigInteger&gt; list = new ArrayList&lt;&gt;();
+        list.add(BigInteger.valueOf(2001));
+        list.add(BigInteger.valueOf(2002));
+        list.add(BigInteger.valueOf(2003));
+        list.add(BigInteger.valueOf(2004));
+        String sumPrice = &quot;40&quot;;
+        JsonResult&lt;Map&lt;String, String&gt;&gt; map = chargeActivityService.createOrder(trustAddress, privateKey, gasPrice, gasLimit, list, sumPrice, owner);
+        System.out.println(JSON.toJSONString(map));
+    }
+
+</code></pre><h4 id="2-6-tokenid-">2. 6 查询指定tokenid上架信息</h4>
+<ul>
+<li><p>方法名 ：<code>getApproveInfo()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>{
+    &quot;code&quot;: &quot;0&quot;,
+    &quot;data&quot;: {
+        &quot;owner&quot;: &quot;0x591f62ef4b811dc400473cabe0d6641f59186089&quot;,
+        &quot;tokenid&quot;: 450002,
+        &quot;value&quot;: &quot;1&quot;
+    },
+    &quot;map&quot;: {},
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;success&quot;: true
+}
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void getApproveInfo() throws Exception {
+        String trustAddress = &quot;0x6bc5d6249344b3372f6a18d0285c94f677f2afaa&quot;;
+        BigInteger tokenid = BigInteger.valueOf(450002);
+        JsonResult&lt;PlatFormApproveInfo&gt; platFormApproveInfo = chargeActivityService.getApproveInfo(trustAddress, tokenid);
+        System.out.println(JSON.toJSONString(platFormApproveInfo));
+    }
+</code></pre><h4 id="2-7-">2. 7 结束活动</h4>
+<ul>
+<li><p>方法名 ：<code>endActivity()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code> /* {
+        &quot;code&quot;: &quot;0&quot;,
+        &quot;data&quot;: &quot;0x4d645a3465be5bb54d1ff2aaabbcf49040e715eb8988e434f75e01bc31fed8ea&quot;,//hash
+        &quot;map&quot;: {},
+        &quot;msg&quot;: &quot;操作成功&quot;,
+        &quot;success&quot;: true
+    }*/
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void endActivity() throws Exception {
+        String trustAddress = &quot;0x6bc5d6249344b3372f6a18d0285c94f677f2afaa&quot;;
+        String privateKey = &quot;b6c77d007c04e1b2f1bf8e2f8eab8c012f5a4044ca09f02980ae79b148c921e0&quot;;
+        JsonResult&lt;String&gt; platFormApproveInfo = chargeActivityService.endActivity(trustAddress, privateKey,gasPrice,gasLimit);
+
+    }
+</code></pre><h4 id="2-8-">2. 8 获取活动结束时间</h4>
+<ul>
+<li><p>方法名 ：<code>getEndTime()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易托管合约地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>{
+    &quot;code&quot;: &quot;0&quot;,
+    &quot;data&quot;: { 1564140675
+    },
+    &quot;map&quot;: {},
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;success&quot;: true
+}
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void getEndTime() throws Exception {
+        String trustAddress = &quot;0x6bc5d6249344b3372f6a18d0285c94f677f2afaa&quot;;
+        BigInteger tokenid = BigInteger.valueOf(450002);
+        JsonResult&lt;Long&gt; json = chargeActivityService.getEndTime(trustAddress, tokenid);
+    }
+</code></pre><h3 id="3-">3. 质押活动模板</h3>
+<h4 id="3-1-">3. 1 创建合约</h4>
+<ul>
+<li>方法名 ：<code>deploy()</code></li>
+</ul>
+<p>参数说明:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">用户私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">name</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约名称</td>
+</tr>
+<tr>
+<td style="text-align:center">symbol</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约简称</td>
+</tr>
+<tr>
+<td style="text-align:center">metaData</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">描述信息</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>    /*{
+    &quot;code&quot;: &quot;0&quot;,
+    &quot;data&quot;: {
+        &quot;trustAddress&quot;: &quot;0x919f05c5845e67edd5f7f627f9340c61405d1c39&quot;,//平台托管合约地址
+        &quot;assetAddress&quot;: &quot;0x41c73a10c9bf866e413d93a2d8ebf2a2a9d533ca&quot;//资产合约地址
+    },
+    &quot;map&quot;: {},
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;success&quot;: true
+}*/
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void deploy() throws Exception {
+        String privateKey = &quot;afac4908cd6230baa24ef265e5609e9d0908989582779355b307f86a1e6db64d&quot;;
+        String name = &quot;Test merchant&quot;;
+        String symbol = &quot;TM&quot;;
+        String _metadata = &quot;TestData&quot;;
+        JsonResult&lt;DeployResult&gt; jsonResult = pledgeActivityService.deploy(privateKey, gasPrice, gasLimit, name, symbol, _metadata);
+        System.out.println(JSON.toJSONString(jsonResult));
+    }
+</code></pre><h4 id="3-2-">3. 2 发布资产</h4>
+<ul>
+<li>方法名 ：<code>mint()</code></li>
+</ul>
+<p>参数说明:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">assetAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产拥有者</td>
+</tr>
+<tr>
+<td style="text-align:center">metaData</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">自定义信息</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenIdList</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center">资产Id数组</td>
+</tr>
+<tr>
+<td style="text-align:center">canTrans</td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">是否可转移</td>
+</tr>
+<tr>
+<td style="text-align:center">canBurn</td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">是否可销毁</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>    /*{
+        &quot;code&quot;: &quot;0&quot;,
+        &quot;data&quot;: &quot;0xe4843ccebe183be09e5d306f77eecea42ac2e1e443782cfde952b9a56a5596e7&quot;,
+        &quot;map&quot;: {},
+        &quot;msg&quot;: &quot;操作成功&quot;,
+        &quot;success&quot;: true
+    }*/
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void mint() throws Exception {
+        String assetAddress = &quot;0x41c73a10c9bf866e413d93a2d8ebf2a2a9d533ca&quot;;
+        String privateKey = &quot;afac4908cd6230baa24ef265e5609e9d0908989582779355b307f86a1e6db64d&quot;;
+        String to = &quot;0xB6901ccE4e9643e73B5E43948CAf888E8BDF9453&quot;;
+        String _metadata = &quot;TestData&quot;;
+        List&lt;BigInteger&gt; list=new ArrayList&lt;&gt;();
+        list.add(BigInteger.valueOf(210001));
+        list.add(BigInteger.valueOf(210002));
+        list.add(BigInteger.valueOf(210003));
+        list.add(BigInteger.valueOf(210004));
+        JsonResult&lt;String&gt; map = pledgeActivityService.mint(assetAddress,privateKey, gasPrice, gasLimit, to, _metadata,list,true,true);
+        System.out.println(JSON.toJSONString(map));
+
+    }
+</code></pre><h4 id="3-3-">3. 3 资产上架</h4>
+<ul>
+<li>方法名 ：<code>onSales()</code></li>
+</ul>
+<p>参数说明:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">assetAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenIdList</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center">资产id数组</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">price</td>
+<td style="text-align:center">BigDecimal</td>
+<td style="text-align:center">上架单价</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产拥有者</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>/*{
+        &quot;code&quot;: &quot;0&quot;,
+        &quot;data&quot;: {
+            &quot;approveTxId&quot;: &quot;0x3964e6f84eda2abe381aa7f9dcf357cf91346ab639b5e78e7e6d4762300edb4e&quot;,//资产合约授权返回hash
+            &quot;saveApproveTxId&quot;: &quot;0x1dd86d2a15bf5d3c8a9fbf33c2a2b0dd571397e74f112a6736307c20a5b86358&quot;//平台托管合约上架返回hash
+        },
+        &quot;map&quot;: {},
+        &quot;msg&quot;: &quot;操作成功&quot;,
+            &quot;success&quot;: true
+    }*/
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void onSales() throws Exception {
+        String assetAddress = &quot;0x41c73a10c9bf866e413d93a2d8ebf2a2a9d533ca&quot;;
+        String trustAddress = &quot;0x919f05c5845e67edd5f7f627f9340c61405d1c39&quot;;
+        String privateKey = &quot;afac4908cd6230baa24ef265e5609e9d0908989582779355b307f86a1e6db64d&quot;;
+        String owner = &quot;0xB6901ccE4e9643e73B5E43948CAf888E8BDF9453&quot;;
+        List&lt;BigInteger&gt; list=new ArrayList&lt;&gt;();
+        list.add(BigInteger.valueOf(390001));
+        list.add(BigInteger.valueOf(390002));
+        list.add(BigInteger.valueOf(390003));
+        list.add(BigInteger.valueOf(390004));
+        JsonResult&lt;OnSaleResult&gt; map = pledgeActivityService.onSales( assetAddress,  trustAddress,  privateKey,  gasPrice,  gasLimit,  list, new BigDecimal(&quot;10&quot;),  owner);
+       System.out.println(JSON.toJSONString(map));
+    }
+</code></pre><h4 id="3-4-">3. 4 资产下架</h4>
+<ul>
+<li><p>方法名 ：<code>offSales（）</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenids</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center">资产id</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>    /* {
+        &quot;code&quot;: &quot;0&quot;,
+        &quot;data&quot;: &quot;0x4d645a3465be5bb54d1ff2aaabbcf49040e715eb8988e434f75e01bc31fed8ea&quot;,//hash
+        &quot;map&quot;: {},
+        &quot;msg&quot;: &quot;操作成功&quot;,
+        &quot;success&quot;: true
+    }*/
+</code></pre><h4 id="3-5-">3. 5 创建订单</h4>
+<ul>
+<li>方法名 ：<code>createOrder()</code></li>
+</ul>
+<blockquote>
+<p>  方法说明：
+  创建订单操作先执行代币合约的 <code>approve()</code>授权操作，再执行平台托管合约的<code>transfer()</code>交易操作</p>
+</blockquote>
+<ul>
+<li>参数说明</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">平台托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenIdList</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center">资产id数组</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">sumPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">总金额</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产拥有者</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>    /*{
+        &quot;code&quot;: &quot;0&quot;,
+        &quot;data&quot;: {
+        &quot;transferTxId&quot;: &quot;0xd1dcd4fc74d8980fde8073fc939ee4bcafd584a0987e5bdaac2917c008a4b7cb&quot;,//平台托管合约交易返回hash
+        &quot;approveTxId&quot;: &quot;0xf69606bc7c25ee450777a7d7836141ed5f8ef4bf1fb30456cf45724b9f60e6f1&quot;//代币授权返回hash
+        },
+        &quot;map&quot;: {},
+        &quot;msg&quot;: &quot;操作成功&quot;,
+        &quot;success&quot;: true
+    }*/
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void createOrder() throws Exception {
+        String trustAddress = &quot;0x919f05c5845e67edd5f7f627f9340c61405d1c39&quot;;
+        String privateKey = &quot;b6c77d007c04e1b2f1bf8e2f8eab8c012f5a4044ca09f02980ae79b148c921e0&quot;;
+        String owner = &quot;0xB6901ccE4e9643e73B5E43948CAf888E8BDF9453&quot;;
+        List&lt;BigInteger&gt; list = new ArrayList&lt;&gt;();
+        list.add(BigInteger.valueOf(2001));
+        list.add(BigInteger.valueOf(2002));
+        list.add(BigInteger.valueOf(2003));
+        list.add(BigInteger.valueOf(2004));
+        String sumPrice = &quot;40&quot;;
+        JsonResult&lt;Map&lt;String, String&gt;&gt; map = pledgeActivityService.createOrder(trustAddress, privateKey, gasPrice, gasLimit, list, sumPrice, owner);
+        System.out.println(JSON.toJSONString(map));
+    }
+
+</code></pre><h4 id="3-6-tokenid-">3. 6 查询指定tokenid上架信息</h4>
+<ul>
+<li><p>方法名 ：<code>getApproveInfo()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>{
+    &quot;code&quot;: &quot;0&quot;,
+    &quot;data&quot;: {
+        &quot;owner&quot;: &quot;0x591f62ef4b811dc400473cabe0d6641f59186089&quot;,
+        &quot;tokenid&quot;: 450002,
+        &quot;value&quot;: &quot;1&quot;
+    },
+    &quot;map&quot;: {},
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;success&quot;: true
+}
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void getApproveInfo() throws Exception {
+        String trustAddress = &quot;0x6bc5d6249344b3372f6a18d0285c94f677f2afaa&quot;;
+        BigInteger tokenid = BigInteger.valueOf(450002);
+        JsonResult&lt;PlatFormApproveInfo&gt; json = pledgeActivityService.getApproveInfo(trustAddress, tokenid);
+
+    }
+</code></pre><h4 id="3-7-">3. 7 结束活动</h4>
+<ul>
+<li><p>方法名 ：<code>endActivity()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code> /* {
+        &quot;code&quot;: &quot;0&quot;,
+        &quot;data&quot;: &quot;0x4d645a3465be5bb54d1ff2aaabbcf49040e715eb8988e434f75e01bc31fed8ea&quot;,//hash
+        &quot;map&quot;: {},
+        &quot;msg&quot;: &quot;操作成功&quot;,
+        &quot;success&quot;: true
+    }*/
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void endActivity() throws Exception {
+        String trustAddress = &quot;0x6bc5d6249344b3372f6a18d0285c94f677f2afaa&quot;;
+        String privateKey = &quot;b6c77d007c04e1b2f1bf8e2f8eab8c012f5a4044ca09f02980ae79b148c921e0&quot;;
+        JsonResult&lt;String&gt; json = pledgeActivityService.endActivity(trustAddress, privateKey,gasPrice,gasLimit);
+
+    }
+</code></pre><h4 id="3-8-">3. 8 获取活动结束时间</h4>
+<ul>
+<li><p>方法名 ：<code>getEndTime()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易托管合约地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code>{
+    &quot;code&quot;: &quot;0&quot;,
+    &quot;data&quot;: { 1564140675
+    },
+    &quot;map&quot;: {},
+    &quot;msg&quot;: &quot;操作成功&quot;,
+    &quot;success&quot;: true
+}
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void getEndTime() throws Exception {
+        String trustAddress = &quot;0x6bc5d6249344b3372f6a18d0285c94f677f2afaa&quot;;
+        BigInteger tokenid = BigInteger.valueOf(450002);
+        JsonResult&lt;Long&gt; json = pledgeActivityService.getEndTime(trustAddress, tokenid);
+    }
+</code></pre><h4 id="3-9-">3. 9 验证签到后退还押金</h4>
+<ul>
+<li><p>方法名 ：<code>verify()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">待验证tokenId</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">待验证拥有者地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code> /* {
+        &quot;code&quot;: &quot;0&quot;,
+        &quot;data&quot;: &quot;0x4d645a3465be5bb54d1ff2aaabbcf49040e715eb8988e434f75e01bc31fed8ea&quot;,//hash
+        &quot;map&quot;: {},
+        &quot;msg&quot;: &quot;操作成功&quot;,
+        &quot;success&quot;: true
+    }*/
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void verify() throws Exception {
+        String trustAddress = &quot;0x6bc5d6249344b3372f6a18d0285c94f677f2afaa&quot;;
+        String privateKey = &quot;b6c77d007c04e1b2f1bf8e2f8eab8c012f5a4044ca09f02980ae79b148c921e0&quot;;
+       BigInteger tokenid = BigInteger.valueOf(450002);
+       String owner=&quot;0x0b23eff3a9d8f02829d3b0714cf2e00f5fae2b47&quot;;
+        JsonResult&lt;String&gt; json = pledgeActivityService.endActivity(trustAddress, privateKey,gasPrice,gasLimit,tokenid,owner);
+
+    }
+</code></pre><h4 id="3-10-">3. 10 发起方主动退款</h4>
+<ul>
+<li><p>方法名 ：<code>refund()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>JsonResult</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<pre><code> /* {
+        &quot;code&quot;: &quot;0&quot;,
+        &quot;data&quot;: &quot;0x4d645a3465be5bb54d1ff2aaabbcf49040e715eb8988e434f75e01bc31fed8ea&quot;,//hash
+        &quot;map&quot;: {},
+        &quot;msg&quot;: &quot;操作成功&quot;,
+        &quot;success&quot;: true
+    }*/
+</code></pre><ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    @Test
+    public void refund() throws Exception {
+        String trustAddress = &quot;0x6bc5d6249344b3372f6a18d0285c94f677f2afaa&quot;;
+        String privateKey = &quot;b6c77d007c04e1b2f1bf8e2f8eab8c012f5a4044ca09f02980ae79b148c921e0&quot;;
+       BigInteger tokenid = BigInteger.valueOf(450002);
+       String owner=&quot;0x0b23eff3a9d8f02829d3b0714cf2e00f5fae2b47&quot;;
+        JsonResult&lt;String&gt; json = pledgeActivityService.refund(trustAddress, privateKey,gasPrice,gasLimit,tokenid);
+
+    }
+</code></pre>
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+		$('#tree_1_a').attr("href","index.html");
+});
+//-->
+</SCRIPT>

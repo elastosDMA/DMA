@@ -1,0 +1,1771 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>TicketAPI</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<h1 id="ticket-api">Ticket API</h1>
+<h2 id="-"><strong>介绍</strong></h2>
+<p>Ticket 模块覆盖了通用的票务领域，目前可实现收费类型、免费类型、质押类型的票务资产的发行、售卖、转移、验票等。整个交易过程没有平台、三方的参与，使用智能合约完成去中心化的可信交易。我们站在通用票务领域的角度，设计了符合票务标准的数据结构，同时也为用户提供自定义属性设置的接口，方便应用扩展。</p>
+<h2 id="-"><strong>目录</strong></h2>
+<ul>
+<li><a href="#1common">common</a><ul>
+<li><a href="#11资产合约">资产合约</a><ul>
+<li><a href="#111转移门票">转移门票</a></li>
+<li><a href="#112销毁门票">销毁门票</a></li>
+<li><a href="#113签到">签到</a></li>
+<li><a href="#114设置门票是否可转移">设置门票是否可转移</a></li>
+<li><a href="#115获取发行量">获取发行量</a></li>
+</ul>
+</li>
+<li><a href="#12托管合约">托管合约</a><ul>
+<li><a href="#121创建托管合约">创建托管合约</a></li>
+<li><a href="#122创建订单">创建订单</a></li>
+<li><a href="#123获取所有订单记录">获取所有订单记录</a></li>
+<li><a href="#124获取订单详情">获取订单详情</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#2票务">票务</a> <ul>
+<li><a href="#21资产合约">资产合约</a><ul>
+<li><a href="#211创建门票合约">创建门票合约</a></li>
+<li><a href="#212生成门票">生成门票</a></li>
+<li><a href="#213获取票务合约信息">获取票务合约信息</a></li>
+<li><a href="#214获取票务信息">获取票务信息</a></li>
+<li><a href="#215查询用户地址下拥有的门票合约">获取用户地址下拥有的门票合约</a></li>
+<li><a href="#216查询用户地址下拥有的门票">查询用户地址下拥有的门票</a></li>
+</ul>
+</li>
+<li><a href="#22托管合约">托管合约</a><ul>
+<li><a href="#221上架">上架</a></li>
+<li><a href="#222下架">下架</a></li>
+<li><a href="#223我上架的合约信息">我上架的合约信息</a></li>
+<li><a href="#224我上架的">我上架的</a></li>
+<li><a href="#225我未上架的">我未上架的</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#3活动">活动</a> <ul>
+<li><a href="#31资产合约">资产合约</a><ul>
+<li><a href="#31资产合约">创建门票合约</a></li>
+<li><a href="#312生成门票">生成门票</a></li>
+<li><a href="#313获取票务合约信息">获取票务合约信息</a></li>
+<li><a href="#314获取票务信息">获取票务信息</a></li>
+<li><a href="#315查询用户地址下拥有的门票合约">查询用户地址下拥有的门票合约</a></li>
+<li><a href="#316查询用户地址下拥有的门票">查询用户地址下拥有的门票</a></li>
+</ul>
+</li>
+<li><a href="#32托管合约">托管合约</a> <ul>
+<li><a href="#321收费合约">收费合约</a><ul>
+<li><a href="#3211上架">上架</a></li>
+<li><a href="#3212下架">下架</a></li>
+<li><a href="#3213结束活动">结束活动</a></li>
+<li><a href="#3214我上架的合约信息">我上架的合约信息</a></li>
+<li><a href="#3215我上架的">我上架的</a></li>
+<li><a href="#3216我未上架的">我未上架的</a></li>
+</ul>
+</li>
+<li><a href="#322质押合约">质押合约</a><ul>
+<li><a href="#3221上架">上架</a></li>
+<li><a href="#3222下架">下架</a></li>
+<li><a href="#3223结束活动">结束活动</a></li>
+<li><a href="#3224退还押金">退还押金</a></li>
+<li><a href="#3225签到">签到</a></li>
+<li><a href="#3226我上架的合约信息">我上架的合约信息</a></li>
+<li><a href="#3227我上架的">我上架的</a></li>
+<li><a href="#3228我未上架的">我未上架的</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="api"><strong>API</strong></h2>
+<h3 id="1-common">1.common</h3>
+<h4 id="1-1-">1.1资产合约</h4>
+<h5 id="1-1-1-">1.1.1.转移门票</h5>
+<ul>
+<li><p>方法名 ：<code>transfer()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">from</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">from</td>
+</tr>
+<tr>
+<td style="text-align:center">to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">to</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenIds</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center">tokenIds</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+</tbody>
+</table>
+<h5 id="1-1-2-">1.1.2.销毁门票</h5>
+<ul>
+<li><p>方法名 ：<code>burn()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">number</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+</tbody>
+</table>
+<h5 id="1-1-3-">1.1.3.签到</h5>
+<ul>
+<li>方法名 ：<code>verify()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">number</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产拥有者</td>
+</tr>
+</tbody>
+</table>
+<h5 id="1-1-4-">1.1.4.设置门票是否可转移</h5>
+<ul>
+<li><p>方法名 ：<code>setCanTransfer()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">number</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">transferable</td>
+<td style="text-align:center">bool</td>
+<td style="text-align:center">是否可转移</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+</tbody>
+</table>
+<h5 id="1-1-5-">1.1.5.获取发行量</h5>
+<ul>
+<li><p>方法名 ：<code>getTotalSupply()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+</tbody>
+</table>
+<p>####1.2.托管合约</p>
+<h5 id="1-2-1-">1.2.1.创建托管合约</h5>
+<ul>
+<li><p>方法名 ：<code>createContract()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+</tbody>
+</table>
+<h5 id="1-2-2-">1.2.2.创建订单</h5>
+<ul>
+<li>方法名 ：<code>placeOrder()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenIds</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">sumPrice</td>
+<td style="text-align:center">decimal</td>
+<td style="text-align:center">支付金额</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">拥有者</td>
+</tr>
+</tbody>
+</table>
+<h5 id="1-2-3-">1.2.3.获取所有订单记录</h5>
+<ul>
+<li>方法名 ：<code>getOrders()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustContractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">dmaNodeUrl</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">dma 节点地址</td>
+</tr>
+<tr>
+<td style="text-align:center">from</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">from</td>
+</tr>
+<tr>
+<td style="text-align:center">to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">to</td>
+</tr>
+</tbody>
+</table>
+<h5 id="1-2-4-">1.2.4.获取订单详情</h5>
+<ul>
+<li>方法名 ：<code>getOrderInfoByHash()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">hash</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">txId</td>
+</tr>
+<tr>
+<td style="text-align:center">dmaNodeUrl</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">dma 节点地址</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-">2.票务</h3>
+<h4 id="2-1-">2.1.资产合约</h4>
+<h5 id="2-1-1-">2.1.1.创建门票合约</h5>
+<ul>
+<li><p>方法名 ：<code>createContract()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenMap</td>
+<td style="text-align:center">Map&lt;BigInteger, TicketTokenInfo&gt;</td>
+<td style="text-align:center">token的信息</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+</tbody>
+</table>
+<h5 id="2-1-2-">2.1.2.生成门票</h5>
+<ul>
+<li><p>方法名 ：<code>createAsset()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenMap</td>
+<td style="text-align:center">Map&lt;BigInteger, TicketTokenInfo&gt;</td>
+<td style="text-align:center">token的信息</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+</tbody>
+</table>
+<h5 id="2-1-3-">2.1.3.获取票务合约信息</h5>
+<ul>
+<li><p>方法名 ：<code>getContractInfo()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+</tbody>
+</table>
+<h5 id="2-1-4-">2.1.4.获取票务信息</h5>
+<ul>
+<li><p>方法名 ：<code>getAssetInfo()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">number</td>
+</tr>
+</tbody>
+</table>
+<h5 id="2-1-5-">2.1.5.查询用户地址下拥有的门票合约</h5>
+<ul>
+<li><p>方法名 ：<code>getContracts()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">用户地址</td>
+</tr>
+<tr>
+<td style="text-align:center">dmaNodeUrl</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">dma 节点地址</td>
+</tr>
+</tbody>
+</table>
+<h5 id="2-1-6-">2.1.6.查询用户地址下拥有的门票</h5>
+<ul>
+<li><p>方法名 ：<code>getAssets()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">用户地址</td>
+</tr>
+<tr>
+<td style="text-align:center">dmaNodeUrl</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">dma 节点地址</td>
+</tr>
+</tbody>
+</table>
+<h4 id="2-2-">2.2.托管合约</h4>
+<h5 id="2-2-1-">2.2.1.上架</h5>
+<ul>
+<li><p>方法名 ：<code>onShelves()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+<tr>
+<td style="text-align:center">map</td>
+<td style="text-align:center">Map&lt;tokenId,price&gt;</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">拥有者</td>
+</tr>
+</tbody>
+</table>
+<h5 id="2-2-2-">2.2.2.下架</h5>
+<ul>
+<li>方法名 ：<code>offShelves()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenIds</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">拥有者</td>
+</tr>
+</tbody>
+</table>
+<h5 id="2-2-3-">2.2.3.我上架的合约信息</h5>
+<ul>
+<li>方法名 ：<code>getOnShelveContracts()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管地址</td>
+</tr>
+</tbody>
+</table>
+<h5 id="2-2-4-">2.2.4.我上架的</h5>
+<ul>
+<li>方法名 ：<code>getOnShelves()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">拥有者</td>
+</tr>
+<tr>
+<td style="text-align:center">dmaNodeUrl</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">dma 节点地址</td>
+</tr>
+</tbody>
+</table>
+<h5 id="2-2-5-">2.2.5.我未上架的</h5>
+<ul>
+<li>方法名 ：<code>getOnShelves()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">拥有者</td>
+</tr>
+<tr>
+<td style="text-align:center">dmaNodeUrl</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">dma 节点地址</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-">3.活动</h3>
+<h4 id="3-1-">3.1.资产合约</h4>
+<h5 id="3-1-1-">3.1.1.创建门票合约</h5>
+<ul>
+<li><p>方法名 ：<code>createContract()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">ActivityContractInfo</td>
+<td style="text-align:center">ActivityContractInfo</td>
+<td style="text-align:center">token的信息</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+</tbody>
+</table>
+<pre><code>    private String dmaTag = &quot;DMA_Activity&quot;;//固定字段，标识DMA票务类型。
+    private String dmaExtenfTag;//扩展标签，使用者自定义
+    private Long startTime; //开始时间
+    private Long endTime;//结束时间
+    private String title;//活动主题，使用者自定义
+    private String describe;//活动描述，使用者自定义
+    private String imgUrl;//活动封面图片，使用者自定义
+    private String location;//主办地理位置，使用者自定义
+    private String type;//类型，使用者自定义
+    private String json;//扩展json，使用者自定义
+
+</code></pre><h5 id="3-1-2-">3.1.2.生成门票</h5>
+<ul>
+<li><p>方法名 ：<code>createAsset()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenMap</td>
+<td style="text-align:center">Map&lt;BigInteger, ActivityTokenInfo&gt;</td>
+<td style="text-align:center">token的信息</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+</tbody>
+</table>
+<pre><code>    //ActivityTokenInfo
+    private String contractAddress;
+    private Boolean canTransfer;
+    private String owner;
+    private Long startTime; //开始时间
+    private Long endTime;//结束时间
+    private String ticketTag;//活动标签
+    private String ticketType;//活动类型
+    private Double price;//活动定价
+    private String json;//扩展json
+
+</code></pre><h5 id="3-1-3-">3.1.3.获取票务合约信息</h5>
+<ul>
+<li><p>方法名 ：<code>getContractInfo()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+</tbody>
+</table>
+<h5 id="3-1-4-">3.1.4.获取票务信息</h5>
+<ul>
+<li><p>方法名 ：<code>getAssetInfo()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">number</td>
+</tr>
+</tbody>
+</table>
+<h5 id="3-1-5-">3.1.5.查询用户地址下拥有的门票合约</h5>
+<ul>
+<li><p>方法名 ：<code>getContracts()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">用户地址</td>
+</tr>
+<tr>
+<td style="text-align:center">dmaNodeUrl</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">dma 节点地址</td>
+</tr>
+</tbody>
+</table>
+<h5 id="3-1-6-">3.1.6.查询用户地址下拥有的门票</h5>
+<ul>
+<li><p>方法名 ：<code>getAssets()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">用户地址</td>
+</tr>
+<tr>
+<td style="text-align:center">dmaNodeUrl</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">dma 节点地址</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-2-">3.2.托管合约</h4>
+<h5 id="3-2-1-">3.2.1.收费合约</h5>
+<h6 id="3-2-1-1-">3.2.1.1.上架</h6>
+<ul>
+<li><p>方法名 ：<code>onShelves()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+<tr>
+<td style="text-align:center">map</td>
+<td style="text-align:center">Map&lt;tokenId,price&gt;</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">拥有者</td>
+</tr>
+<tr>
+<td style="text-align:center">endTime</td>
+<td style="text-align:center">number</td>
+<td style="text-align:center">活动结束时间(unixtime)</td>
+</tr>
+</tbody>
+</table>
+<h6 id="3-2-1-2-">3.2.1.2.下架</h6>
+<ul>
+<li>方法名 ：<code>offShelves()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenIds</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">拥有者</td>
+</tr>
+</tbody>
+</table>
+<h6 id="3-2-1-3-">3.2.1.3.结束活动</h6>
+<ul>
+<li>方法名 ：<code>endActivity()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+</tbody>
+</table>
+<h6 id="3-2-1-4-">3.2.1.4.我上架的合约信息</h6>
+<ul>
+<li>方法名 ：<code>getOnShelveContracts()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管地址</td>
+</tr>
+</tbody>
+</table>
+<h6 id="3-2-1-5-">3.2.1.5.我上架的</h6>
+<ul>
+<li>方法名 ：<code>getOnShelves()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">拥有者</td>
+</tr>
+<tr>
+<td style="text-align:center">dmaNodeUrl</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">dma 节点地址</td>
+</tr>
+</tbody>
+</table>
+<h6 id="3-2-1-6-">3.2.1.6.我未上架的</h6>
+<ul>
+<li>方法名 ：<code>getOnShelves()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">拥有者</td>
+</tr>
+<tr>
+<td style="text-align:center">dmaNodeUrl</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">dma 节点地址</td>
+</tr>
+</tbody>
+</table>
+<h5 id="3-2-2-">3.2.2.质押合约</h5>
+<h6 id="3-2-2-1-">3.2.2.1.上架</h6>
+<ul>
+<li><p>方法名 ：<code>onShelves()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+<tr>
+<td style="text-align:center">map</td>
+<td style="text-align:center">Map&lt;tokenId,price&gt;</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">拥有者</td>
+</tr>
+<tr>
+<td style="text-align:center">endTime</td>
+<td style="text-align:center">number</td>
+<td style="text-align:center">活动结束时间(unixtime)</td>
+</tr>
+</tbody>
+</table>
+<h6 id="3-2-2-2-">3.2.2.2.下架</h6>
+<ul>
+<li>方法名 ：<code>offShelves()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenIds</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">拥有者</td>
+</tr>
+</tbody>
+</table>
+<h6 id="3-2-2-3-">3.2.2.3.结束活动</h6>
+<ul>
+<li>方法名 ：<code>endActivity()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+</tbody>
+</table>
+<h6 id="3-2-2-4-">3.2.2.4.退还押金</h6>
+<ul>
+<li>方法名 ：<code>refund()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">number</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+</tbody>
+</table>
+<h6 id="3-2-2-5-">3.2.2.5.签到</h6>
+<ul>
+<li>方法名 ：<code>verify()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">number</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产拥有者</td>
+</tr>
+</tbody>
+</table>
+<h6 id="3-2-2-6-">3.2.2.6.我上架的合约信息</h6>
+<ul>
+<li>方法名 ：<code>getOnShelveContracts()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管地址</td>
+</tr>
+</tbody>
+</table>
+<h6 id="3-2-2-7-">3.2.2.7.我上架的</h6>
+<ul>
+<li>方法名 ：<code>getOnShelves()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">trustAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">托管合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">拥有者</td>
+</tr>
+<tr>
+<td style="text-align:center">dmaNodeUrl</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">dma 节点地址</td>
+</tr>
+</tbody>
+</table>
+<h6 id="3-2-2-8-">3.2.2.8.我未上架的</h6>
+<ul>
+<li>方法名 ：<code>getOnShelves()</code></li>
+</ul>
+<ul>
+<li>参数说明:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">拥有者</td>
+</tr>
+<tr>
+<td style="text-align:center">dmaNodeUrl</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">dma 节点地址</td>
+</tr>
+</tbody>
+</table>
+
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+		$('#tree_1_a').attr("href","index.html");
+});
+//-->
+</SCRIPT>

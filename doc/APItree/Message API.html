@@ -1,0 +1,1021 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>MessageAPI</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<p>﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿﻿</p>
+<h2 id="message-api">Message API</h2>
+<h2 id="-"><strong>介绍</strong></h2>
+<p>   Message模块主要包装了Carrier消息功能，我们在开发过程中预置了Carrier离线接口，待Carrier离线消息SDK提供后，进行补充，其中借鉴了Hyper的消息封装代码。（message模块api目前只支持Android）</p>
+<h2 id="-"><strong>目录</strong></h2>
+<ul>
+<li><a href="#1-是否链接上节点">1. 是否链接上节点 </a></li>
+<li><a href="#2-启动节点">2. 启动节点</a></li>
+<li><a href="#3-清除消息">3. 清除消息</a></li>
+<li><a href="#4-关闭节点">4. 关闭节点</a></li>
+<li><a href="#5-停止正在传送的文件">5. 停止正在传送的文件</a></li>
+<li><a href="#6-获取地址">6. 获取地址</a></li>
+<li><a href="#7-获取用户id">7. 获取用户id</a></li>
+<li><a href="#8-验证地址有效性">8. 验证地址有效性</a></li>
+<li><a href="#9-验证用户id有效性">9. 验证用户id有效性</a></li>
+<li><a href="#10-添加好友">10. 添加好友</a></li>
+<li><a href="#11-设置profile">11. 设置profile</a></li>
+<li><a href="#12-发送消息">12. 发送消息</a></li>
+<li><a href="#13-同意好友请求">13. 同意好友请求</a></li>
+<li><a href="#14-我的profile">14. 我的profile</a></li>
+<li><a href="#15-获取好友信息">15. 获取好友信息</a></li>
+<li><a href="#16-好友列表">16. 好友列表</a></li>
+<li><a href="#17-群组">17. 群组</a></li>
+<li><a href="#18-发送群消息">18. 发送群消息</a></li>
+</ul>
+<h3 id="1-">1. 是否链接上节点</h3>
+<ul>
+<li>方法名称   isConnected </li>
+</ul>
+<blockquote>
+<p>返回参数</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">isConnected</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">true、false</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-">2. 启动节点</h3>
+<ul>
+<li>方法名称 run </li>
+</ul>
+<h3 id="-carrier">清除carrier</h3>
+<ul>
+<li>方法名称   cleanup</li>
+</ul>
+<h3 id="3-">3. 关闭节点</h3>
+<ul>
+<li>方法名称  kill </li>
+</ul>
+<h3 id="4-">4. 发送文件</h3>
+<ul>
+<li>方法名称  sendFile</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">file</td>
+<td style="text-align:center">file</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>返回参数</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">fileId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-">5. 停止正在传送的文件</h3>
+<ul>
+<li>方法名称  stopFile</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">fileId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-">6. 获取地址</h3>
+<ul>
+<li>getAddress</li>
+</ul>
+<blockquote>
+<p>返回参数</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="7-id">7. 获取用户id</h3>
+<ul>
+<li>方法名称  getUserId </li>
+</ul>
+<blockquote>
+<p>返回参数：</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">userId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">用户id</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="8-">8. 验证地址有效性</h3>
+<ul>
+<li>方法名称  isValidAddress </li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>返回参数：</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">isValidAddress</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">是否有效</td>
+<td style="text-align:center">true、false</td>
+</tr>
+</tbody>
+</table>
+<h3 id="9-id-">9. 验证用户id有效性</h3>
+<ul>
+<li>方法名称 isValidUserId </li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">userId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">用户id</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>返回参数：</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">isValidUserId</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">是否有效</td>
+<td style="text-align:center">true、false</td>
+</tr>
+</tbody>
+</table>
+<h3 id="10-">10. 添加好友</h3>
+<ul>
+<li>方法名称 addFriend</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">好友地址</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">nickname</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">昵称</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">message</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">验证消息</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-">同意好友请求</h3>
+<ul>
+<li>方法名称 acceptFriend</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">userId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">用户id</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">nickname</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">昵称</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-">解除好友关系</h3>
+<ul>
+<li>removeFriend</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">userId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">用户id</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="11-profile">11. 设置profile</h3>
+<ul>
+<li>setSelfInfo</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">UserInfo</td>
+<td style="text-align:center">object</td>
+<td style="text-align:center">用户信息</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="lang-JAVA">class UserInfo{
+        String userId;
+        String name;
+        String description;
+        boolean hasAvatar;
+       String gender;
+       String phone;
+       String email;
+       String region;
+}
+</code></pre>
+<h3 id="12-">12. 发送消息</h3>
+<ul>
+<li>sendFriendMessage</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">userId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">用户id</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">message</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">验证消息</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-profile">13. 我的profile</h3>
+<ul>
+<li>getSelfInfo</li>
+</ul>
+<blockquote>
+<p>返回参数</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">UserInfo</td>
+<td style="text-align:center">object</td>
+<td style="text-align:center">用户信息</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-">获取好友信息</h3>
+<ul>
+<li>getFriend</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">userId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">用户id</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p> 返回参数</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">FriendInfo</td>
+<td style="text-align:center">object</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+<td style="text-align:center">参考 结构： FriendInfo</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="lang-java">class FriendInfo{
+        String userId;
+        String name;
+        String description;
+        boolean hasAvatar;
+       String gender;
+       String phone;
+       String email;
+       String region;
+       ConnectionStatus status  ; // 0: Connected ||  1:Disconnected
+
+}
+
+
+</code></pre>
+<h3 id="-">好友列表</h3>
+<ul>
+<li>getFriends</li>
+</ul>
+<blockquote>
+<p>返回参数</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">List<FriendInfo></td>
+<td style="text-align:center">object</td>
+<td style="text-align:center"></td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">参考 结构： FriendInfo</td>
+</tr>
+</tbody>
+</table>
+<h2 id="group">group</h2>
+<h3 id="13-">13. 创建一个群组</h3>
+<ul>
+<li>createRoom</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">title</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">群昵称</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p> 返回参数</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">groupId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="-">好友邀请</h3>
+<ul>
+<li>inviteToRoom</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">groupId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">群id</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">friendId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">好友id</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p> 返回参数</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">result</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">结果</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-">加入群组</h3>
+<ul>
+<li>joinRoom</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">cookieText</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">组的cookie信息</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">friendId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">用户id</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p> 返回参数</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">result</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">结果</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-">关闭群组</h3>
+<ul>
+<li>closeRoom</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">groupId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">群id</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p> 返回参数</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">result</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">结果</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-">删除群组</h3>
+<ul>
+<li>joinRoom</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">groupId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">群id</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p> 返回参数</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">result</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">结果</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-">设置群组昵称</h3>
+<ul>
+<li>setRoomTitle</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">groupId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">群id</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">title</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">群昵称</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p> 返回参数</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">result</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">结果</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="14-">14. 发送群消息</h3>
+<ul>
+<li>sendRoomMessage</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">groupId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">群id</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">message</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">群消息</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p> 返回参数</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">result</td>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">结果</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="-">群好友信息</h3>
+<ul>
+<li>getPeerList</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">groupId</td>
+<td style="text-align:center">string</td>
+<td style="text-align:center">群id</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p> 返回参数</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">描述</th>
+<th style="text-align:center">必须</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">peerInfo</td>
+<td style="text-align:center">object</td>
+<td style="text-align:center">结果</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+		$('#tree_1_a').attr("href","index.html");
+});
+//-->
+</SCRIPT>

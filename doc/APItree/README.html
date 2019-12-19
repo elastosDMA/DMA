@@ -1,0 +1,607 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>README</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<p>[toc]</p>
+
+<h2 id="-">用户指南</h2>
+<h3 id="1-java-sdk-">1、JAVA SDK 开发指南</h3>
+<h4 id="1-1-sdk-">1.1 SDK说明</h4>
+<p> 平台JAVA SDK 是通过服务（Service）的形式对外提供功能，具体包括资产管理服务（AssetManagement ）个人数据服务（Passport）存储服务（Storage）钱包服务（ Wallet）商户服务 （ Merchant），消息服务（ Message），工具类（ Utility） 。</p>
+<h5 id="-">运行环境说明</h5>
+<ul>
+<li>JDK 8 及以上版本在终端运行 java -version 查看当前 Java 版本。</li>
+<li>Maven 3.5.4 及以上版本在终端运行 mvn -v 查看当前 Maven 版本。</li>
+</ul>
+<h4 id="1-2-">1.2 快速开始</h4>
+<p>步骤一：在Maven文件中引入SDK包</p>
+<ul>
+<li>安装下载的 jar 包到本地仓库。</li>
+<li>从命令终端进入到下载的文件根目录，执行以下命令：</li>
+</ul>
+<pre><code>//安装 SDK 到本地仓库
+mvn install:install-file -Dfile=dma-base-2.1.4-eth-beta.jar -DgroupId=org.elastos -DartifactId=dma-base -Dversion=2.1.4-eth-beta -Dpackaging=jar
+
+mvn install:install-file -Dfile=dma-service-2.1.4-eth-beta.jar -DgroupId=org.elastos -DartifactId=dma-service -Dversion=2.1.4-eth-beta -Dpackaging=jar
+
+mvn install:install-file -Dfile=dma-utility-2.1.4-eth-beta.jar -DgroupId=org.elastos -DartifactId=dma-utility -Dversion=2.1.4-eth-beta -Dpackaging=jar
+
+</code></pre><p>步骤二：使用 Intellij IDEA 创建一个基于 Maven 构建的空项目（Demo）。</p>
+<p>步骤三：导入依赖</p>
+<pre><code>
+&lt;repositories&gt;
+        &lt;repository&gt;
+            &lt;id&gt;jitpack.io&lt;/id&gt;
+            &lt;url&gt;https://jitpack.io&lt;/url&gt;
+        &lt;/repository&gt;
+    &lt;/repositories&gt;
+
+    &lt;dependencies&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.elastos&lt;/groupId&gt;
+            &lt;artifactId&gt;dma-base&lt;/artifactId&gt;
+            &lt;version&gt;2.1.4-eth-beta&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.elastos&lt;/groupId&gt;
+            &lt;artifactId&gt;dma-service&lt;/artifactId&gt;
+            &lt;version&gt;2.1.4-eth-beta&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.elastos&lt;/groupId&gt;
+            &lt;artifactId&gt;dma-utility&lt;/artifactId&gt;
+            &lt;version&gt;2.1.4-eth-beta&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.github.ipfs&lt;/groupId&gt;
+            &lt;artifactId&gt;java-ipfs-api&lt;/artifactId&gt;
+            &lt;version&gt;v1.2.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.elastos&lt;/groupId&gt;
+            &lt;artifactId&gt;wallet.lib&lt;/artifactId&gt;
+            &lt;version&gt;0.0.9&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+
+
+</code></pre><h4 id="1-3-">1.3 接口调用说明</h4>
+<h5 id="assetmanagement-">AssetManagement模块</h5>
+<p><code>AssetManagement</code>模块基于ETH侧链，资产分为ERC20类型资产和ERC721类型资产</p>
+<ul>
+<li>ERC20资产管理类构建</li>
+</ul>
+<pre><code>    @Test
+    public void ERC20Test() {
+        String nodeUrl = &quot;http://127.0.0.1:8545&quot;;//节点地址
+        Token20 token20 = new Token20Service(nodeUrl);
+    }
+
+
+</code></pre><ul>
+<li>ERC721资产管理类构建</li>
+</ul>
+<pre><code>    @Test
+    public void ERC721Test() {
+        String nodeUrl = &quot;http://127.0.0.1:8545&quot;;//节点地址
+        Token721 token721 = new Token721Service(nodeUrl);
+    }
+
+</code></pre><h5 id="merchant-">Merchant模块</h5>
+<p><code>Merchant</code>模块中有三种不同类型的实现。<code>MerchantService</code>接口实现ERC721资产以售卖形式进行资产的流通；<code>ChargeActivityService</code>接口以收费活动形式进行资产的流通;<code>PledgeActivityService</code>接口以质押活动形式进行资产的流通。</p>
+<ul>
+<li>MerchantService</li>
+</ul>
+<pre><code>
+    @Test
+    public void merchant() throws TokenException, RpcException {
+        String nodeUrl = &quot;http://127.0.0.1:8545&quot;;//ETH链节点地址
+        String chainType = &quot;&quot;;//链类型（自定义）
+        //创建MerchantService
+        MerchantService merchantService = new MerchantServiceImpl(chainType, nodeUrl);
+
+        String privateKey = &quot;&quot;;//用户私钥
+        BigInteger gasPrice = BigInteger.valueOf(1000000000);//gas费用
+        BigInteger gasLimit = BigInteger.valueOf(7000000);//gas限制
+        String name = &quot;&quot;; //ERC721资产名称
+        String symbol = &quot;&quot;; //ERC721资产标识
+        String metadata = &quot;&quot;;//ERC721资产信息（自定义）
+        //创建合约
+        JsonResult&lt;DeployResult&gt; jsonResult = merchantService.deploy(privateKey, gasPrice, gasLimit, name, symbol, metadata);
+
+        System.out.println(jsonResult.getData().getAssetAddress());//资产合约地址
+        System.out.println(jsonResult.getData().getTrustAddress());//资产托管合约地址
+
+    }
+
+</code></pre><ul>
+<li>ChargeActivityService</li>
+</ul>
+<pre><code>    @Test
+    public void chargeActivityService() throws TokenException, RpcException {
+        String nodeUrl = &quot;http://127.0.0.1:8545&quot;;//ETH链节点地址
+        String chainType = &quot;&quot;;//链类型（自定义）
+        //ChargeActivityService
+        ChargeActivityService chargeActivityService = new ChargeActivityServiceImpl(chainType, nodeUrl);
+
+        String privateKey = &quot;&quot;;//用户私钥
+        BigInteger gasPrice = BigInteger.valueOf(1000000000);//gas费用
+        BigInteger gasLimit = BigInteger.valueOf(7000000);//gas限制
+        String name = &quot;&quot;; //ERC721资产名称
+        String symbol = &quot;&quot;; //ERC721资产标识
+        String metadata = &quot;&quot;;//ERC721资产信息（自定义）
+        Long endTime = 1568876617L;//活动结束时间
+        //创建合约
+        JsonResult&lt;DeployResult&gt; jsonResult = chargeActivityService.deploy(privateKey, gasPrice, gasLimit, name, symbol, metadata, endTime);
+
+        System.out.println(jsonResult.getData().getAssetAddress());//资产合约地址
+        System.out.println(jsonResult.getData().getTrustAddress());//资产托管合约地址
+
+    }
+
+</code></pre><ul>
+<li>PledgeActivityService</li>
+</ul>
+<pre><code>    @Test
+    public void pledgeActivityService() throws TokenException, RpcException {
+        String nodeUrl = &quot;http://127.0.0.1:8545&quot;;//ETH链节点地址
+        String chainType = &quot;&quot;;//链类型（自定义）
+        //PledgeActivityService
+        PledgeActivityService pledgeActivityService = new PledgeActivityServiceImpl(chainType, nodeUrl);
+
+        String privateKey = &quot;&quot;;//用户私钥
+        BigInteger gasPrice = BigInteger.valueOf(1000000000);//gas费用
+        BigInteger gasLimit = BigInteger.valueOf(7000000);//gas限制
+        String name = &quot;&quot;; //ERC721资产名称
+        String symbol = &quot;&quot;; //ERC721资产标识
+        String metadata = &quot;&quot;;//ERC721资产信息（自定义）
+        Long endTime = 1568876617L;//活动结束时间
+        //创建合约
+        JsonResult&lt;DeployResult&gt; jsonResult = pledgeActivityService.deploy(privateKey, gasPrice, gasLimit, name, symbol, metadata, endTime);
+
+        System.out.println(jsonResult.getData().getAssetAddress());//资产合约地址
+        System.out.println(jsonResult.getData().getTrustAddress());//资产托管合约地址
+
+    }
+
+</code></pre><h5 id="passport-">Passport模块</h5>
+<p>Passport模块基于亦来云DID侧链</p>
+<pre><code>    @Test
+    public void passportService() {
+        String didNodeUrl = &quot;http://127.0.0.1:20336&quot;;//did侧链节点地址
+        PassportService passportService = new PassportServiceImpl(didNodeUrl, &quot;&quot;);
+        DIDAccount didAccount = passportService.create(HdSupport.MnemonicType.ENGLISH);
+        System.out.println(didAccount.getPrivateKey());//私钥
+        System.out.println(didAccount.getMnemonic());//助记词
+        System.out.println(didAccount.getAddress());//did钱包地址
+        System.out.println(didAccount.getDid());//did
+    }
+
+
+</code></pre><h5 id="storage-">Storage模块</h5>
+<p>Storage模块基于ipfs实现</p>
+<pre><code>    @Test
+    public void IpfsService(){
+        String multiaddr = &quot;/ip4/127.0.0.1/tcp/5001&quot;;
+        IpfsService ipfsService= IpfsService.getInstance(multiaddr);
+    }
+
+</code></pre><h5 id="wallet-">Wallet模块</h5>
+<p><code>Wallet</code>模块是对用户钱包的管理，针对不同的链，有不同的实现。目前主要有基于ETH链的<code>EthWalletService</code>;基于ELA链的<code>ElaWalletService</code>;基于ETH侧链的<code>ElaETHSideWalletService</code>;基于DID侧链的<code>ElaDIDSideWalletService</code>。用户根据自己的需要，选择不同的实现类。</p>
+<h4 id="1-4-api-">1.4 API说明</h4>
+<ul>
+<li>1.1.<a href="http://www.elastosdma.org/api/AssetManagement%20API.html"> AssetManagement（资产管理）</a></li>
+<li>1.2.<a href="http://www.elastosdma.org/api/Merchant%20API.html"> Merchant（商家）</a></li>
+<li>1.3.<a href="http://www.elastosdma.org/api/Passport%20API.html"> Passport（身份认证）</a></li>
+<li>1.4.<a href="http://www.elastosdma.org/api/Storage%20API.html"> Storage（存储）</a></li>
+<li>1.5.<a href="http://www.elastosdma.org/api/Utility%20API.html"> Utility（工具）</a></li>
+<li>1.6.<a href="http://www.elastosdma.org/api/Wallet%20API.html"> Wallet（钱包）</a><!---  1.7.[ Payment（支付）] [7]-->
+<!---  1.8. [Message（消息）] [8]-->
+</li>
+</ul>
+<h3 id="2-android-sdk-">2、Android SDK 开发指南</h3>
+<h4 id="2-1-sdk-">2.1 SDK说明</h4>
+<p>平台Android SDK 是通过服务（Service）的形式对外提供功能，具体包括资产管理服务（AssetManagement ）个人数据服务（Passport）存储服务（Storage）钱包服务（ Wallet）商户服务 （ Merchant），消息服务（ Message），支付服务（Payment）工具类（ Utility） 。SDK 提供以同步或异步方式发送交易、查询交易等的接口。无论以同步或异步的方式发送交易，SDK 封装了发送交易后查询收据的逻辑，以便您查看交易的执行结果。</p>
+<h4 id="2-2-">2.2 快速开始</h4>
+<p>集成和开发，本项目SDK使用AAR的打包方式</p>
+<p>步骤1：下载DMA客户端SDK</p>
+<p>包含DMA_BASE、DMA_SERVICE、DMA_MESSAGE、DMA_utility</p>
+<p> 步骤2：导入SDK</p>
+<p>步骤3：在主项目的 build.gradle 中，添加下面的内容，将 libs 目录作为依赖仓库：</p>
+<pre><code>allprojects {
+
+    repositories {
+    // 添加下面的内容
+    flatDir {
+        dirs &#39;libs&#39;
+    }
+
+    // ... jcenter() 等其他仓库
+}
+}
+</code></pre><p>步骤4：在您 App Module 的 build.gradle 中，添加下面的内容，将DMA SDK 作为项目依赖：</p>
+<pre><code>dependencies {
+
+// 添加下面的内容
+api &#39;org.elastos:carrier:5.4.0&#39;
+
+implementation &#39;org.elastos:ElastosSdkWallet:v0.1.20@aar&#39;
+
+api &#39;org.web3j:core:3.3.1-android&#39;
+
+api (&#39;org.elastos:dma-utility:1.1.4-eth-beta&#39;){
+
+exclude group: &#39;org.web3j&#39;
+
+exclude group: &#39;org.bouncycastle&#39;
+
+}
+
+implementation(name: &#39;Elastos.DMA.Base1.0.0&#39;, ext: &#39;aar&#39;)
+
+implementation(name: &#39;Elastos.DMA.Service1.0.0&#39;, ext: &#39;aar&#39;)
+
+implementation(name: &#39;Elastos.DMA.Message1..0.0&#39;, ext: &#39;aar&#39;)
+
+    // ... 其他依赖项
+}
+</code></pre><p>至此，DMA SDK 开发资源导入完成。</p>
+<p>步骤5：添加运行权限</p>
+<p>为正常完成良好的体验，DMA SDK 需要使用下面这些权限：</p>
+<pre><code>android.permission.INTERNET
+android.permission.ACCESS_NETWORK_STATE
+android.permission.ACCESS_WIFI_STATE
+</code></pre><p>您需要在 AndroidManifest 里配置以上 3 个权限，DMA SDK 在运行时需要进行网络连接，并在必要的时候判断网络连接的状态（4G/Wi-Fi）等来进行应用体验的优化。</p>
+<h4 id="2-3-">2.3 接口调用说明</h4>
+<pre><code>初始化节点信息
+  public static String didip = &quot;http://54.64.220.165:21604&quot;;//测试DID 
+public static String elaip = &quot;http://54.64.220.165:21334&quot;;//测试ELA
+public static String ip = &quot;http://47.105.136.158:8545&quot;;//DMAtestlink
+public static String ipfsIP=&quot;http://47.105.136.158:8080&quot;;//ipfs生产
+private volatile static EthWalletService ethWalletService;
+    /**
+    *初始化钱包服务
+    **/
+    public static EthWalletService getClient() {
+    if (ethWalletService == null) {
+        ethWalletService = new EthWalletService(ip);
+    }
+    return ethWalletService;
+}
+</code></pre><p>  需要在新线程中调用接口（可参考 demo 实现）</p>
+<pre><code>示例代码：
+private void verifyWallet(String pwd){
+new AsyncTask&lt;Void, Void,  Passport &gt;(){
+@Override
+protected  Passport doInBackground(Void... params) {
+   Passport passport= passportService.create(HdSupport.MnemonicType.ENGLISH,&quot;&quot;);
+    return passport;
+}
+protected void onPostExecute( Passport  passport) {
+         System.out.println(passport.getMnemonic());
+   System.out.println(passport.getId
+());
+//根据DID产生的助记词，导出ETH钱包
+EthAccount ethAccount=NodeClient.getClient().exportByMnemonic(passport.getMnemonic());
+//根据DID产生的助记词，导出ELA钱包
+ElaWallet elaWallet= NodeClient.getHdWallet(TestActivity.this,words);
+
+};
+}.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+}
+</code></pre><h4 id="2-4-">2.4   接口测试</h4>
+<p>  首先根据选择测试的链，调用对应的创建钱包账户接口，创建无需准备对应的货币</p>
+<p>  ELA主链 转账交易transfer()测试需要ELA主链币</p>
+<p>  DID链，写入数据passport.setInfo() 需要准备DID侧链币，可通过主链充值的方式，也可以通过其他钱包转账的方式</p>
+<p>  ETH侧链，转账交易transfer()，合约发布deploy()，发布资产mint() 资产上架onSales() 资产下架 offSales() 创建订单createOrder() 等链上交易接口需要准备测试币</p>
+<h4 id="2-5-api-">2.5 API详细说明</h4>
+<ul>
+<li>1.1. <a href="http://www.elastosdma.org/api/AssetManagement%20API.html">AssetManagement（资产管理）</a></li>
+<li>1.2.<a href="http://www.elastosdma.org/api/Merchant%20API.html"> Merchant（商家）</a></li>
+<li>1.3. <a href="http://www.elastosdma.org/api/Passport%20API.html">Message（消息）</a></li>
+<li>1.4.<a href="http://www.elastosdma.org/api/Storage%20API.html"> Passport（身份认证）</a></li>
+<li>1.5.<a href="http://www.elastosdma.org/api/Utility%20API.html"> Payment（支付）</a></li>
+<li>1.6. <a href="http://www.elastosdma.org/api/Wallet%20API.html">Storage（存储）</a></li>
+<li>1.7.<a href="http://www.elastosdma.org/api/Payment%20API.html"> Utility（工具）</a></li>
+<li>1.8.<a href="http://www.elastosdma.org/api/Message%20API.html"> Wallet（钱包）</a></li>
+<li>1.9 <a href="http://www.elastosdma.org/api/index.html">环境配置 </a></li>
+</ul>
+<h3 id="3-ios-sdk-">3、IOS SDK 开发指南</h3>
+<h4 id="3-1-sdk-">3.1 SDK说明</h4>
+<p>平台Android SDK 是通过服务（Service）的形式对外提供功能，具体包括资产管理服务（AssetManagement ）个人数据服务（Passport）存储服务（Storage）钱包服务（ Wallet）商户服务 （ Merchant），消息服务（ Message），支付服务（Payment）工具类（ Utility） 。SDK 提供以同步或异步方式发送交易、查询交易等的接口。无论以同步或异步的方式发送交易，SDK 封装了发送交易后查询收据的逻辑，以便您查看交易的执行结果。</p>
+<h4 id="3-2-">3.2 快速开始</h4>
+<p>#Swift: 5.0 以上</p>
+<p>1 -- 先使用Carthage</p>
+<p>在文件中添加如下</p>
+<pre><code>github &quot;tang3680564/DMASDK&quot; &quot;master&quot;
+</code></pre><p>执行命令</p>
+<pre><code>Carthage update --platform ios
+</code></pre><p>2 -- 再使用 pod</p>
+<p>在文件中添加如下</p>
+<pre><code>pod &#39;ElastosCarrierSDK&#39;, &#39;~&gt; 5.3.2&#39;
+</code></pre><p>执行命令</p>
+<pre><code>pod install
+</code></pre><p>最后将 carthage 的 build 里面的 framework 和 lib目录中的ElastosSdkWallet.framework ,ElastosSdkKeypair.framework添加到项目当中</p>
+<p>builsetting: bitcode -&gt; false</p>
+<p>在使用的地方使用</p>
+<p>import DMASDKV1</p>
+<h4 id="3-3-">3.3 接口调用说明</h4>
+<h4 id="1-eth-ela-did-">1.钱包相关:现在支持 eth,ela,did三个钱包</h4>
+<h6 id="-eth-">生成eth钱包:</h6>
+<pre><code>
+///创建 eth 钱包服务
+
+let ethService : EthService = EthService();
+
+///生成(助记词,私钥,地址,)
+
+let result = ethService.create()
+
+///助记词
+
+let mnemonic = result.0
+
+///私钥
+
+let privateKey = result.1
+
+///地址
+
+let address = result.2
+</code></pre><h6 id="-">查询余额</h6>
+<pre><code>///节点地址
+
+let url = &quot;&quot;
+
+///创建 eth 钱包服务
+
+let ethService : EthService = EthService(url : url);
+
+///查询地址
+
+let address = &quot;&quot;
+
+///查询余额
+
+let balance = ethService.balances(address:address)
+</code></pre><h4 id="2-">2存储相关</h4>
+<h5 id="1-">1.上传</h5>
+<pre><code>///ipfs节点地址,例如:&quot;47.105.136.158&quot;
+
+let url = &quot;&quot;
+
+///上传节点端口,例如:8080
+
+let serverPost = &quot;&quot;
+
+///创建 ipfs 服务
+
+let ipfs = IpfsService(URL : url,serverPost : serverPost)
+
+///上传,data 数据
+
+let data = Data()
+
+///上传返回凭证
+
+let hash = ipfs.add(fileData : data)
+</code></pre><h5 id="2-">2.下载</h5>
+<pre><code>///ipfs节点地址,例如:&quot;47.105.136.158&quot;
+
+let url = &quot;&quot;
+
+///下载节点端口,例如:5001
+
+let serverPost = &quot;&quot;
+
+///创建 ipfs 服务
+
+let ipfs = IpfsService(URL : url,serverPost : serverPost)
+
+
+///上传返回的凭证
+
+let hash = &quot;&quot;
+
+///下载
+
+let arrary = ipfs.getBytes(hash:hash)
+
+</code></pre><h4 id="3-">3.资产相关</h4>
+<h5 id="1-chargeactivityservice-">1.ChargeActivityService(收费活动模板)</h5>
+<h6 id="-">发布合约</h6>
+<pre><code>///eth的节点地址
+
+let url = &quot;&quot;
+
+///创建服务
+
+let chargeActivityService = ChargeActivityService(url : url)
+let privateKey = &quot;&quot;
+let gasPrice = defaultGasPrice
+let gasLimit = defaultGasLimit
+let name = &quot;&quot;
+let symbol = &quot;&quot;
+let metadata = &quot;&quot;
+let endtime = &quot;\(Int(Date().timeIntervalSince1970) + 3600 * 24)&quot;
+/// - Parameters:
+    ///   - privateKey: 私钥
+    ///   - gasPrice: gasPrice description
+    ///   - gasLimit: gasLimit description
+    ///   - name: 合约名称
+    ///   - symbol: 合约简介
+    ///   - metadata: 合约描述
+    ///   - endtime: 活动结束时间
+    /// - Returns: assetAddress : 资产合约地址,platformAddress : 托管合约地址
+    let result = chargeActivityService.deploy(privateKey:privateKey,gasPrice:gasPrice,gasLimit:gasLimit,name:name,symbol:symbol,metadata:metadata,endtime : endtime)
+</code></pre><h6 id="-">初始化资产</h6>
+<pre><code>///eth的节点地址
+
+let url = &quot;&quot;
+
+///创建服务
+
+let chargeActivityService = ChargeActivityService(url : url)
+
+let privateKey = &quot;&quot;
+let contractAddress = &quot;&quot;
+let toAddress = &quot;&quot;
+let tokenArr : NSMutableArray = [1000]
+
+ /// 批量创建资产
+    ///
+    /// - Parameters:
+    ///   - privateKey: 私钥
+    ///   - assetAddress: 资产合约地址
+    ///   - to: 资产归属地址
+    ///   - array: 资产 id 数组
+    ///   - metaData: 资产描述
+    ///   - isTransfer: 是否可以转送
+    ///   - isBurn: 是否可以销毁
+    ///   - gasLimit: gasLimit description
+    ///   - gasPrice: gasPrice description
+    /// - Returns: return value description
+
+let reult = charge.mintWithArrayGas(privateKey : privateKey,assetAddress : contractAddress,to: toAddress, array: tokenArr as! Array&lt;Any&gt;, metaData: &quot;&quot;, isTransfer: true, isBurn: true)
+</code></pre><h4 id="3-4-api-">3.4 API详细说明</h4>
+<ul>
+<li>1.1.<a href="http://www.elastosdma.org/api/AssetManagement%20API.html"> AssetManagement（资产管理）</a></li>
+<li>1.2.<a href="http://www.elastosdma.org/api/Merchant%20API.html"> Merchant（商家）</a></li>
+<li>1.3.<a href="http://www.elastosdma.org/api/Passport%20API.html"> Passport（身份认证）</a></li>
+<li>1.4.<a href="http://www.elastosdma.org/api/Storage%20API.html"> Storage（存储）</a></li>
+<li>1.5.<a href="http://www.elastosdma.org/api/Utility%20API.html"> Utility（工具）</a></li>
+<li>1.6.<a href="http://www.elastosdma.org/api/Wallet%20API.html"> Wallet（钱包）</a></li>
+<li>1.7.<a href="http://www.elastosdma.org/api/Payment%20API.html"> Payment（支付）</a></li>
+<li>1.8. <a href="http://www.elastosdma.org/api/Message%20API.html">Message（消息）</a></li>
+</ul>
+<h2 id="-">四、常见问题</h2>
+<h2 id="-">五、错误码</h2>
+<pre><code>    SUCCESS | 0 | 操作成功
+ERROR | -1 | 请求失败
+PARAMS_ERROR | 2 | 参数错误
+SYSTEM_ERROR | 4 | 系统异常
+
+IO_ERROR | 29 | 远程调用失败
+REVOKE_ERROR | 72 | 下架失败
+ON_SALE_ERROR | 73 | 上架失败
+CONFIRM_ORDER_ERROR | 92 | 下单失败
+
+CREATE_ORDER_ERROR | 96 | 创建订单失败
+PAYMENT_MERCHANT_REGISTERED | 116 | 已注册
+WALLET_ADDRESS_EMPTY | 117 | 钱包地址不能为空
+PAYMENT_MERCHANT_ID_EMPTY | 118 | 支付商户号不能为空
+PAYMENT_MERCHANT_ID_NOT_EXISTS | 119 | 支付商户号不存在
+PAYMENT_SIGN_EMPTY | 120 | 验签字段不能为空
+PAYMENT_SIGN_INVALID | 121 | 验签不通过
+ORDER_EXISTS | 124 | 订单号已存在
+SIDE_ERROR | 127 | 交易类型错误
+
+CONTRACT_ADDRESS_NOT_EXISTS | 8 | 合约不存在
+ORDER_NO_EMPTY | 19 | 订单号不能为空
+TOKEN_ADDRESS_ERROR | 10001 | token地址不存在或错误
+TOKEN_BALANCE_UNDERFINANCED | 10002 | token余额不足
+GASLIMINT_SHORT | 10003 | gasLimit缺少
+BALANCE_UNDERFINANCED | 10004 | 余额不足
+APPROVE_TOKEN_BALANCE_UNDERFINANCED | 10005 | 授权token余额不足
+CONTRACT_DEPLOY_ERROR | 10006 | 合约创建失败
+PRIVATEKEY_ERROR | 10007 | 私钥错误
+ADDRESS_ERROR | 10008 | 地址错误
+RPC_REQUEST_FAILED | 20001 | rpc请求失败
+RPC_ERROR | 30001 | 远程调用失败
+NOT_ENOUGH_TRANSACTION_PARAMETER | 40001 | 参数不足
+NOT_VALID_DATA_TO_RAW_TX | 40002 | 交易数据无效
+NOT_VALID_TYPE_TO_TRANSFER | 40003 | 交易类型无效
+PARAMETER_INVALID | 40004 | 参数无效
+SIGN_DID_INFO_INVALID | 40005 | did信息签名错误
+TRANSFER_FAILED | 40006 | 交易失败
+NO_INFO | 40007 | 未查询到信息
+</code></pre>
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+		$('#tree_1_a').attr("href","index.html");
+});
+//-->
+</SCRIPT>

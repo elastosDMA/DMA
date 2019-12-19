@@ -1,0 +1,267 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>StorageAPI</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<p>﻿# Storage API</p>
+<h2 id="-"><strong>介绍</strong></h2>
+<p>Storage API提供存储相关功能，目前对ipfs进行封装，使用请阅读以下文档</p>
+<h2 id="build"><strong>Build</strong></h2>
+<pre><code>private String httpUrl = &quot;http://47.105.136.158:8080&quot; ;
+private String multiaddr = &quot;/ip4/47.105.136.158/tcp/5001&quot;;
+IpfsService ipfsService=IpfsService.getInstance();
+</code></pre><h2 id="-"><strong>目录</strong></h2>
+<ul>
+<li><a href="#1-存储字节流">1. 存储字节流</a></li>
+<li><a href="#2-存储文件">2. 存储文件</a></li>
+<li><a href="#3-存储json">3. 存储json</a></li>
+<li><a href="#4-根据hash值获取json">4. 根据hash值获取json</a></li>
+<li><a href="#5-根据hash值获取字节流">5. 根据hash值获取字节流</a></li>
+</ul>
+<hr>
+<h2 id="api"><strong>API</strong></h2>
+<h3 id="1-">1. 存储字节流</h3>
+<ul>
+<li><p>方法名 ：<code>add()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">data</td>
+<td style="text-align:center">byte[]</td>
+<td style="text-align:center">字节流</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  存储hash</p>
+</blockquote>
+<h3 id="2-">2. 存储文件</h3>
+<ul>
+<li><p>方法名 ：<code>add()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">file</td>
+<td style="text-align:center">File</td>
+<td style="text-align:center">文件</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  存储hash</p>
+</blockquote>
+<h3 id="3-json">3. 存储json</h3>
+<ul>
+<li><p>方法名 ：<code>add()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">json</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">json</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  存储hash</p>
+</blockquote>
+<h3 id="4-hash-json">4. 根据hash值获取json</h3>
+<ul>
+<li><p>方法名 ：<code>getJson()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">hash</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">hash</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  json串</p>
+</blockquote>
+<h3 id="5-hash-">5. 根据hash值获取字节流</h3>
+<ul>
+<li><p>方法名 ：<code>getBytes()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">hash</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">hash</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>byte[]</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  字节流</p>
+</blockquote>
+
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+		$('#tree_1_a').attr("href","index.html");
+});
+//-->
+</SCRIPT>

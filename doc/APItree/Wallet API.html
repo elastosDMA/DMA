@@ -1,0 +1,2749 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>WalletAPI</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<p>﻿# Wallet API</p>
+<h2 id="-"><strong>介绍</strong></h2>
+<p>Wallet API是对Wallet模块的封装，包含以太坊钱包功能封装、亦来云主链钱包封装、亦来云侧链（DID、ETH）钱包封装。使用Wallet API进行钱包开发，请阅读以下文档。</p>
+<h2 id="build"><strong>Build</strong></h2>
+<pre><code>//eth wallet
+
+    private String nodeurl = &quot;http://127.0.0.1:8545&quot;;//以太坊节点地址
+    private EthWalletService ethWalletService = new EthWalletService(nodeurl);
+
+
+
+//ela main wallet
+
+    private String nodeurl = &quot;http://54.64.220.165:21334&quot;;//亦来云主链测试节点地址
+    private ElaWalletService elaWalletService = new ElaWalletService(nodeurl);
+
+
+//ela did wallet
+
+    private String nodeurl = &quot;http://54.64.220.165:21604&quot;;//亦来云did侧链测试节点地址
+    private ElaDIDSideWalletService elaDIDSideWalletService = new ElaDIDSideWalletService(nodeurl);
+
+
+//ela eth wallet
+
+    private String nodeurl = &quot;http://52.205.30.16:8545&quot;;//亦来云eth侧链测试节点地址
+    private ElaETHSideWalletService elaETHSideWalletService = new ElaETHSideWalletService(nodeurl);
+
+</code></pre><h2 id="-"><strong>目录</strong></h2>
+<ul>
+<li><a href="#1-eth-wallet">1.ETH Wallet (以太坊钱包)</a><ul>
+<li><a href="#1-1-创建钱包">1.1 创建钱包</a></li>
+<li><a href="#1-2-根据私钥导出钱包">1.2 根据私钥导出钱包</a></li>
+<li><a href="#1-3-根据助记词导出钱包">1.3 根据助记词导出钱包</a></li>
+<li><a href="#1-4-根据地址获取余额">1.4 根据地址获取余额</a></li>
+<li><a href="#1-5-转账">1.5 转账</a></li>
+<li><a href="#1-6-根据hash查询交易详情">1.6 根据hash查询交易详情</a></li>
+<li><a href="#1-7-地址校验">1.7 地址校验</a></li>
+<li><a href="#1-8-根据地址获取代币余额">1.8 根据地址获取代币余额</a></li>
+<li><a href="#1-9-erc20代币转账">1.9 erc20代币转账</a></li>
+<li><a href="#1-10-根据hash查询交易状态">1.10 根据hash查询交易状态</a></li>
+</ul>
+</li>
+<li><a href="#2-ela-wallet">2.ELA Wallet (亦来云钱包)</a><ul>
+<li><a href="#2-1-创建钱包">2.1 创建钱包</a></li>
+<li><a href="#2-2-根据私钥导出钱包">2.2 根据私钥导出钱包</a></li>
+<li><a href="#2-3-根据助记词导出钱包">2.3 根据助记词导出钱包</a></li>
+<li><a href="#2-4-根据地址获取余额">2.4 根据地址获取余额</a></li>
+<li><a href="#2-5-转账">2.5 转账</a></li>
+<li><a href="#2-6-查询交易详情">2.6 查询交易详情</a></li>
+<li><a href="#2-7-地址校验">2.7 地址校验</a></li>
+<li><a href="#2-8-根据txid查询交易状态">2.8 据txid查询交易状态</a></li>
+<li><a href="#2-9-本地交易签名">2.9 本地交易签名</a></li>
+<li><a href="#2-10-解析交易签名">2.10 解析交易签名</a></li>
+<li><a href="#2-11-发送交易签名上链">2.11 发送交易签名上链</a></li>
+<li><a href="#2-12-主链向did侧链充值">2.12 主链向DID侧链充值</a></li>
+<li><a href="#2-13-主链向eth侧链充值链">2.13 主链向ETH侧链充值</a></li>
+</ul>
+</li>
+<li><a href="#3-did-side-wallet">3.DID Side Wallet (亦来云did侧链钱包)</a><ul>
+<li><a href="#3-1-创建钱包">3.1 创建钱包</a></li>
+<li><a href="#3-2-根据私钥导出钱包">3.2 根据私钥导出钱包</a></li>
+<li><a href="#3-3-根据助记词导出钱包">3.3 根据助记词导出钱包</a></li>
+<li><a href="#3-4-根据地址获取余额">3.4 根据地址获取余额</a></li>
+<li><a href="#3-5-转账">3.5 转账</a></li>
+<li><a href="#3-6-查询交易详情">3.6 查询交易详情</a></li>
+<li><a href="#3-7-地址校验">3.7 地址校验</a></li>
+<li><a href="#3-8-根据txid查询交易状态">3.8 据txid查询交易状态</a></li>
+<li><a href="#3-9-did侧链向主链提现">3.9 DID侧链向主链提现</a></li>
+</ul>
+</li>
+<li><a href="#4-eth-side-wallet">4.ETH Side Wallet (亦来云ETH侧链钱包)</a><ul>
+<li><a href="#4-1-创建钱包">4.1 创建钱包</a></li>
+<li><a href="#4-2-根据私钥导出钱包">4.2 根据私钥导出钱包</a></li>
+<li><a href="#4-3-根据助记词导出钱包">4.3 根据助记词导出钱包</a></li>
+<li><a href="#4-4-根据地址获取余额">4.4 根据地址获取余额</a></li>
+<li><a href="#4-5-转账">4.5 转账</a></li>
+<li><a href="#4-6-根据hash查询交易详情">4.6 根据hash查询交易详情</a></li>
+<li><a href="#4-7-地址校验">4.7 地址校验</a></li>
+<li><a href="#4-8-根据hash查询交易状态">4.8 根据hash查询交易状态</a></li>
+<li><a href="#4-9-eth侧链向主链提现">4.9 ETH侧链向主链提现</a>    </li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="api"><strong>API</strong></h2>
+<h3 id="1-eth-wallet">1. eth wallet</h3>
+<h4 id="1-1-">1. 1 创建钱包</h4>
+<ul>
+<li><p>方法名 ：<code>create()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">mnemonicType</td>
+<td style="text-align:center">MnemonicType</td>
+<td style="text-align:center">助记词类型（目前支持中文、英文）</td>
+</tr>
+<tr>
+<td style="text-align:center">pwd</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">助记词密码（选填）</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>EthAccount</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">返回值</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">返回值说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">publicKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">公钥</td>
+</tr>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">钱包地址</td>
+</tr>
+<tr>
+<td style="text-align:center">mnemonic</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">助记词</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 创建钱包
+    * */
+    @Test
+    public void createTest() {
+        EthAccount ethAccount =ethWalletService.create(HdSupport.MnemonicType.ENGLISH);
+        String address = ethAccount.getAddress();//地址
+        String mnemonic = ethAccount.getMnemonic();//助记词
+        String privateKey = ethAccount.getPrivateKey();//私钥
+        String publicKey = ethAccount.getPublicKey();//公钥
+        System.out.println(address);
+        System.out.println(mnemonic);
+        System.out.println(privateKey);
+        System.out.println(publicKey);
+    }
+</code></pre><h4 id="1-2-">1. 2 根据私钥导出钱包</h4>
+<ul>
+<li><p>方法名 ：<code>exportByPrivateKey()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>EthAccount</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">返回值</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">返回值说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">publicKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">公钥</td>
+</tr>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">钱包地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+     * 根据私钥导出钱包
+     *
+     */
+    @Test
+    public void exportByPrivateKey() throws ApiException {
+        String privateKey = &quot;d6ed30f07efa7ccd641186e752f827f9f4901c797d3b614e9f6aee56a031147f&quot;;
+        EthAccount elaAccount = ethWalletService.exportByPrivateKey(privateKey);
+        String address = elaAccount.getAddress();//地址
+        String publicKey = elaAccount.getPublicKey();//公钥
+        System.out.println(address);
+        System.out.println(privateKey);
+        System.out.println(publicKey);
+    }
+</code></pre><h4 id="1-3-">1. 3 根据助记词导出钱包</h4>
+<ul>
+<li><p>方法名 ：<code>exportByMnemonic()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">mnemonic</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">助记词</td>
+</tr>
+<tr>
+<td style="text-align:center">pwd</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">助记词密码（选填）</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>EthAccount</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">返回值</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">返回值说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">publicKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">公钥</td>
+</tr>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">钱包地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>   /**
+     * 根据 助记词导出钱包
+     */
+    @Test
+    public void exportByMnemonic() {
+        String mnemonic = &quot;hospital educate still slam december hidden video what member next raise junior&quot;;
+        EthAccount ethAccount = ethWalletService.exportByMnemonic(mnemonic);
+        String address = ethAccount.getAddress();//地址
+        String privateKey = ethAccount.getPrivateKey();//私钥
+        String publicKey = ethAccount.getPublicKey();//公钥
+        System.out.println(address);
+        System.out.println(mnemonic);
+        System.out.println(privateKey);
+        System.out.println(publicKey);
+    }
+
+</code></pre><h4 id="1-4-">1. 4 根据地址获取余额</h4>
+<ul>
+<li><p>方法名 ：<code>balance()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  余额</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /**
+     * 获取余额
+     */
+    @Test
+    public void balance() throws IOException {
+        String address = &quot;0x6e55aaebaefe953931fcfc251079b874484e69ed&quot;;
+        BigDecimal balance = ethWalletService.balance(address);
+        System.out.println(balance);
+    }
+
+</code></pre><h4 id="1-5-">1. 5 转账</h4>
+<ul>
+<li><p>方法名 ：<code>transfer()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privatekey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">接收者地址</td>
+</tr>
+<tr>
+<td style="text-align:center">value</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">转出金额</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：交易hash</p>
+</li>
+<li><p>示例代码</p>
+</li>
+</ul>
+<pre><code>     /**
+     * eth转账
+     */
+    @Test
+    public void transfer() throws Exception {
+        String privateKey = &quot;8194cfe0650f004785b176f83a88af84ed73087a72609174605ef87054272811&quot;;
+        String _to = &quot;0x6e55aaebaefe953931fcfc251079b874484e69ed&quot;;
+        BigInteger gasPrice = BigInteger.valueOf(10000000000L);
+        BigInteger gasLimit = BigInteger.valueOf(60000);
+        String hash = ethWalletService.transfer(privateKey, _to, BigDecimal.valueOf(1), gasPrice, gasLimit);
+        System.out.println(hash);
+
+    }
+</code></pre><h4 id="1-6-hash-">1. 6 根据hash查询交易详情</h4>
+<ul>
+<li><p>方法名 ：<code>getTransaction()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">hash</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易hash</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>TransactionInfo</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">transactionHash</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易hash</td>
+</tr>
+<tr>
+<td style="text-align:center">transactionIndex</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">在一个区块中交易序号</td>
+</tr>
+<tr>
+<td style="text-align:center">blockHash</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">区块hash</td>
+</tr>
+<tr>
+<td style="text-align:center">blockNumber</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">区块好</td>
+</tr>
+<tr>
+<td style="text-align:center">status</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易状态(1 交易成功；0 交易失败；空(null) 等待打包确认)</td>
+</tr>
+<tr>
+<td style="text-align:center">from</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">发送方地址</td>
+</tr>
+<tr>
+<td style="text-align:center">to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">接收方地址</td>
+</tr>
+<tr>
+<td style="text-align:center">value</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易金额(eth)</td>
+</tr>
+<tr>
+<td style="text-align:center">timestamp</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">交易时间戳</td>
+</tr>
+<tr>
+<td style="text-align:center">nonce</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">交易随机数</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">gasUsed</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">实际使用gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">logs</td>
+<td style="text-align:center">List<Log></td>
+<td style="text-align:center">交易日志</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>/**
+     * 获取交易信息
+     */
+    @Test
+    public void transactionInfo() throws IOException {
+        String hash = &quot;0x548fc720a4c12a22ce55b434ae44d18a685a0d8381dcafd72b95291d87026b9a&quot;;
+        TransactionInfo transactionInfo = ethWalletService.getTransaction(hash);
+        System.out.println(JSON.toJSONString(transactionInfo));
+
+        //{
+        //    &quot;blockHash&quot;: &quot;0xd889806afb3ef11b633cd9e43e441063d771a4fe39bff71e63a43fa4f4dcfa29&quot;,
+        //    &quot;blockNumber&quot;: &quot;59&quot;,
+        //    &quot;from&quot;: &quot;0x872c74d84c3a6df6814409219ad68f155df01706&quot;,
+        //    &quot;gasLimit&quot;: 60000,
+        //    &quot;gasPrice&quot;: &quot;1E-8&quot;,
+        //    &quot;gasUsed&quot;: &quot;21000&quot;,
+        //    &quot;logs&quot;: [],
+        //    &quot;nonce&quot;: 4,
+        //    &quot;status&quot;: &quot;1&quot;,
+        //    &quot;timestamp&quot;: 1571305073,
+        //    &quot;to&quot;: &quot;0x6e55aaebaefe953931fcfc251079b874484e69ed&quot;,
+        //    &quot;transactionHash&quot;: &quot;0x548fc720a4c12a22ce55b434ae44d18a685a0d8381dcafd72b95291d87026b9a&quot;,
+        //    &quot;transactionIndex&quot;: &quot;0&quot;,
+        //    &quot;value&quot;: &quot;1&quot;
+        //}
+    }
+</code></pre><h4 id="1-7-">1. 7 地址校验</h4>
+<ul>
+<li><p>方法名 ：<code>checkAddr()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>Boolean</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">true 有效地址；false 无效地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /**
+     * 检查地址是否正确
+     */
+    @Test
+    public void checkAddr() {
+        String address = &quot;0x6e55aaebaefe953931fcfc251079b874484e69ed&quot;;
+        boolean checkAddr = ethWalletService.checkAddr(address);
+        System.out.println(checkAddr);
+    }
+</code></pre><h4 id="1-8-">1. 8 根据地址获取代币余额</h4>
+<ul>
+<li><p>方法名 ：<code>tokenBalance()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  余额</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /**
+     * 获取代币余额
+     */
+    @Test
+    public void tokenBalance() throws Exception {
+        String owner = &quot;0xA258f950203b46A4036CE4c71BC64CE1d010EaaC&quot;;//地址
+        String contractAddress = &quot;0xd08f65e3895750201c620b1951079e4ee12a251a&quot;;//代币地址
+        String tokenBalance = ethWalletService.tokenBalance(owner, contractAddress);
+        System.out.println(tokenBalance);
+    }
+</code></pre><h4 id="1-9-erc20-">1. 9 erc20代币转账</h4>
+<ul>
+<li><p>方法名 ：<code>tokenTransfer()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privatekey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">接收者地址</td>
+</tr>
+<tr>
+<td style="text-align:center">value</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">转出金额</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  交易hash</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /**
+     * eth转账
+     */
+    @Test
+    public void tokenTransfer() throws Exception {
+        String contractAddress = &quot;0xd08f65e3895750201c620b1951079e4ee12a251a&quot;;//代币地址
+        String privateKey=&quot;f4b7957d7f11b014a77ad80e5d03d1c732f51c08ec7925c3d6175e19d099d832&quot;;
+        String _to=&quot;0x21f017BA0937426e8d68417b59658e2DC74c8936&quot;;
+        String _value=&quot;10&quot;;
+        BigInteger gasPrice=BigInteger.valueOf(1000000000);
+        BigInteger gasLimit=BigInteger.valueOf(60000);
+        String hash = ethWalletService.tokenTransfer(contractAddress,privateKey, _to,_value,gasPrice,gasLimit);
+        System.out.println(hash);
+
+    }
+</code></pre><h4 id="1-10-hash-">1. 10 根据hash查询交易状态</h4>
+<ul>
+<li><p>方法名 ：<code>getTransferStatus()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">hash</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">hash</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>Boolean</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  true 交易成功；false 交易失败；空（null） 交易打包中</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 获取交易状态
+    * */
+    @Test
+    public void getTransferStatus() throws IOException {
+        String txid = &quot;0xb4628a779ce00cb5dd0b321325554802f701600516fed8c292511c831151f06a&quot;;
+        Boolean transferStatus = ethWalletService.getTransferStatus(txid);
+        System.out.println(transferStatus);
+    }
+</code></pre><h3 id="2-ela-wallet">2. ela wallet</h3>
+<h4 id="2-1-">2. 1 创建钱包</h4>
+<ul>
+<li><p>方法名 ：<code>create()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">mnemonicType</td>
+<td style="text-align:center">MnemonicType</td>
+<td style="text-align:center">助记词类型（目前支持中文、英文）</td>
+</tr>
+<tr>
+<td style="text-align:center">pwd</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">助记词密码（选填）</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>ElaAccount</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">返回值</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">返回值说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">publicKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">公钥</td>
+</tr>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">钱包地址</td>
+</tr>
+<tr>
+<td style="text-align:center">mnemonic</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">助记词</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 创建钱包
+    * */
+    @Test
+    public void create() {
+        ElaAccount elaAccount = elaWalletService.create();
+        String address = elaAccount.getAddress();//地址
+        String mnemonic = elaAccount.getMnemonic();//助记词
+        String privateKey = elaAccount.getPrivateKey();//私钥
+        String publicKey = elaAccount.getPublicKey();//公钥
+        System.out.println(address);
+        System.out.println(mnemonic);
+        System.out.println(privateKey);
+        System.out.println(publicKey);
+    }
+</code></pre><h4 id="2-2-">2. 2 根据私钥导出钱包</h4>
+<ul>
+<li><p>方法名 ：<code>exportByPrivateKey()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>ElaAccount</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">返回值</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">返回值说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">publicKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">公钥</td>
+</tr>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">钱包地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 根据私钥导出钱包
+    * */
+    @Test
+    public void exportByPrivateKey() {
+        String privateKey = &quot;4CDA5C9D041CD0281E5724A106B84977071A454FD56EA1294985DE76210073EA&quot;;
+        ElaAccount elaAccount = elaWalletService.exportByPrivateKey(privateKey);
+        String address = elaAccount.getAddress();//地址
+        String publicKey = elaAccount.getPublicKey();//公钥
+        System.out.println(address);
+        System.out.println(privateKey);
+        System.out.println(publicKey);
+    }
+</code></pre><h4 id="2-3-">2. 3 根据助记词导出钱包</h4>
+<ul>
+<li><p>方法名 ：<code>exportByMnemonic()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">mnemonic</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">助记词</td>
+</tr>
+<tr>
+<td style="text-align:center">pwd</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">助记词密码（选填）</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>ElaAccount</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">返回值</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">返回值说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">publicKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">公钥</td>
+</tr>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">亦来云钱包地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 根据 助记词导出钱包
+    * */
+    @Test
+    public void exportByMnemonic() {
+        String mnemonic = &quot;satoshi patient awake crush great behave glide melody neither can version bargain&quot;;
+        ElaAccount elaAccount = elaWalletService.exportByMnemonic(mnemonic);
+        String address = elaAccount.getAddress();//地址
+        String privateKey = elaAccount.getPrivateKey();//私钥
+        String publicKey = elaAccount.getPublicKey();//公钥
+        System.out.println(address);
+        System.out.println(mnemonic);
+        System.out.println(privateKey);
+        System.out.println(publicKey);
+    }
+</code></pre><h4 id="2-4-">2. 4 根据地址获取余额</h4>
+<ul>
+<li><p>方法名 ：<code>balance()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：余额</p>
+</li>
+<li><p>示例代码</p>
+</li>
+</ul>
+<pre><code>    /*
+     * 获取余额
+    * */
+    @Test
+    public void balance() {
+        String address = &quot;EaYijL4HLkqMHbUNQCbArgmZjsNNPMAaXk&quot;;
+        String balance = elaWalletService.balance(address);
+        System.out.println(balance);
+    }
+
+</code></pre><h4 id="2-5-">2. 5 转账</h4>
+<ul>
+<li><p>方法名 ：<code>transfer()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privatekey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">接收者地址</td>
+</tr>
+<tr>
+<td style="text-align:center">value</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">转出金额</td>
+</tr>
+<tr>
+<td style="text-align:center">memo</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">备注</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明： 交易txid</p>
+</li>
+</ul>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /**
+     * 转账
+     */
+    @Test
+    public void transfer() throws Exception {
+        String privateKey = &quot;4CDA5C9D041CD0281E5724A106B84977071A454FD56EA1294985DE76210073EA&quot;;
+        String to = &quot;ENHFT9Xuo3Z1bJn5d2pLfpndwVez7sVG5H&quot;;
+        String value = &quot;0.1&quot;;
+        String txid = elaWalletService.transfer(privateKey, to, value);
+        System.out.println(txid);
+    }
+</code></pre><h4 id="2-6-">2. 6 查询交易详情</h4>
+<ul>
+<li><p>方法名 ：<code>transactionInfo()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">txid</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易txid</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>Map</code></p>
+</li>
+<li><p>返回说明:交易信息</p>
+</li>
+</ul>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>     /*
+    * 获取交易信息
+    * */
+    @Test
+    public void transactionInfo() {
+
+        Map&lt;String, Object&gt; map = elaWalletService.transactionInfo(&quot;b10fe88db3f23565efc93fa7a6549d1a5618855caecee549715fadab087c99b3&quot;);
+
+    }
+</code></pre><h4 id="2-7-">2. 7 地址校验</h4>
+<ul>
+<li><p>方法名 ：<code>checkAddr()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>Boolean</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">true 有效地址；false 无效地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 检查地址是否正确
+    * */
+    @Test
+    public void checkAddr() {
+        String address = &quot;EV4UTSLGpFMM8Y5jjZp4TLVc9QaNFHGosC&quot;;
+        boolean checkAddr = elaWalletService.checkAddr(address);
+        System.out.println(checkAddr);
+    }
+</code></pre><h4 id="2-8-txid-">2. 8 根据txid查询交易状态</h4>
+<ul>
+<li><p>方法名 ：<code>getTransferStatus()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">txid</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">txid</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>Boolean</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  true 交易成功；false 交易失败；空（null） 交易打包中</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 获取交易状态
+    * */
+    @Test
+    public void getTransferStatus() {
+        String txid = &quot;493cca9ff816afec74d9ab7e119c013f2536b6fa0ca63d5b47a914583ca3b860&quot;;
+        Boolean transferStatus = elaWalletService.getTransferStatus(txid);
+        System.out.println(transferStatus);
+    }
+</code></pre><h4 id="2-9-">2. 9 本地交易签名</h4>
+<ul>
+<li><p>方法名 ：<code>getRawTx()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privatekey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">接收者地址</td>
+</tr>
+<tr>
+<td style="text-align:center">value</td>
+<td style="text-align:center">Double</td>
+<td style="text-align:center">转出金额</td>
+</tr>
+<tr>
+<td style="text-align:center">memo</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">备注</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  交易签名code</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code> /**
+     * 签名交易
+     */
+    @Test
+    public void getRawTx() throws Exception {
+        String privateKey = &quot;4CDA5C9D041CD0281E5724A106B84977071A454FD56EA1294985DE76210073EA&quot;;
+        String to = &quot;ENHFT9Xuo3Z1bJn5d2pLfpndwVez7sVG5H&quot;;
+        String value = &quot;0.1&quot;;
+        String txCode = elaWalletService.getRawTx(privateKey, to, new BigDecimal(value));
+        System.out.println(txCode);
+    }
+</code></pre><h4 id="2-10-">2. 10 解析交易签名</h4>
+<ul>
+<li><p>方法名 ：<code>decodeRawTx()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">rawTransaction</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易签名</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>返回值类型：<code>Map</code></li>
+</ul>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code> /**
+     * 解析交易签名
+     */
+    @Test
+    public void decodeRawTx() throws Exception {
+      String txCode=&quot;020001001337303131303438383338323035323538353537012F08CBCC8616F251F04621A481F24DC5287EEFA1A916A2E8FDEC5365B132A84201000000000002B037DB964A231458D2D6FFD5EA18944C4F90E63D547C5D3B9874DF66A4EAD0A380969800000000000000000021383C336427B1FA251CC48B5A9C1069226E44B3DDB037DB964A231458D2D6FFD5EA18944C4F90E63D547C5D3B9874DF66A4EAD0A3602DC304000000000000000021829A879DD9936EAF5A892514F9279AD0DB3F98B3000000000141402A351EE9120B2D3BFEEF2F1B1AA0F53D75F5D8041BFAA3FC5309461561C0180BA8AD2942AC4AC5517CD93E5CABD95AA2A1D029CEA688168EA9CBA514C8F3419C2321038BA51F7221E0660CE83EBDCC6A9BC1581C36B895F367DB34AB66CBE56DC6D61BAC&quot;;
+        Map result = elaWalletService.decodeRawTx(txCode);
+        System.out.println(result);
+    }
+</code></pre><h4 id="2-11-">2. 11 发送交易签名上链</h4>
+<ul>
+<li><p>方法名 ：<code>sendTx()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">txCode</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易签名</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：交易txid</p>
+</li>
+</ul>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /**
+     * 发送交易签名上链
+     */
+    @Test
+    public void sendTx() throws Exception {
+        String txCode=&quot;020001001337303131303438383338323035323538353537012F08CBCC8616F251F04621A481F24DC5287EEFA1A916A2E8FDEC5365B132A84201000000000002B037DB964A231458D2D6FFD5EA18944C4F90E63D547C5D3B9874DF66A4EAD0A380969800000000000000000021383C336427B1FA251CC48B5A9C1069226E44B3DDB037DB964A231458D2D6FFD5EA18944C4F90E63D547C5D3B9874DF66A4EAD0A3602DC304000000000000000021829A879DD9936EAF5A892514F9279AD0DB3F98B3000000000141402A351EE9120B2D3BFEEF2F1B1AA0F53D75F5D8041BFAA3FC5309461561C0180BA8AD2942AC4AC5517CD93E5CABD95AA2A1D029CEA688168EA9CBA514C8F3419C2321038BA51F7221E0660CE83EBDCC6A9BC1581C36B895F367DB34AB66CBE56DC6D61BAC&quot;;
+        String result = elaWalletService.sendTx(txCode);
+        System.out.println(result);
+    }
+</code></pre><h4 id="2-12-did-">2. 12 主链向did侧链充值</h4>
+<ul>
+<li><p>方法名 ：<code>crossTransferToDID()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">主链私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">_to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">did侧链钱包地址</td>
+</tr>
+<tr>
+<td style="text-align:center">_value</td>
+<td style="text-align:center">Double</td>
+<td style="text-align:center">充值金额</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：交易txid</p>
+</li>
+</ul>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    //主链向did侧链转账
+    @Test
+    public void crossTransferToDID() throws Exception {
+        String privateKey = &quot;b14f0ad5a014ee82080ed9234ee6cae3440ae4fe93903dcd836b53d71d82ab4e&quot;;
+        String _to = &quot;ENHFT9Xuo3Z1bJn5d2pLfpndwVez7sVG5H&quot;;
+        Double _value = 4.0;
+        String str = elaWalletService.crossTransferToDID(privateKey, _to, _value);
+        System.out.println(str);
+    }
+
+</code></pre><h4 id="2-13-eth-">2. 13 主链向eth侧链充值</h4>
+<ul>
+<li><p>方法名 ：<code>crossTransferToETH()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">主链私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">_to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">eth侧链钱包地址</td>
+</tr>
+<tr>
+<td style="text-align:center">_value</td>
+<td style="text-align:center">Double</td>
+<td style="text-align:center">充值金额</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：交易txid</p>
+</li>
+</ul>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    //主链向eth侧链转账
+    @Test
+    public void crossTransferToETH() throws Exception {
+        String privateKey = &quot;b14f0ad5a014ee82080ed9234ee6cae3440ae4fe93903dcd836b53d71d82ab4e&quot;;
+        String _to = &quot;0x0b23eff3a9d8f02829d3b0714cf2e00f5fae2b47&quot;;
+        Double _value = 4.0;
+        String str = elaWalletService.crossTransferToETH(privateKey, _to, _value);
+        System.out.println(str);
+    }
+
+</code></pre><h3 id="3-did-side-wallet">3. did side wallet</h3>
+<h4 id="3-1-">3. 1 创建钱包</h4>
+<ul>
+<li><p>方法名 ：<code>create()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">mnemonicType</td>
+<td style="text-align:center">MnemonicType</td>
+<td style="text-align:center">助记词类型（目前支持中文、英文）</td>
+</tr>
+<tr>
+<td style="text-align:center">pwd</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">助记词密码（选填）</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>DIDAccount</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">返回值</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">返回值说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">publicKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">公钥</td>
+</tr>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">钱包地址</td>
+</tr>
+<tr>
+<td style="text-align:center">mnemonic</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">助记词</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 创建钱包
+    * */
+    @Test
+    public void create() {
+        DIDAccount didAccount = elaDIDSideWalletService.create();
+        String address = didAccount.getAddress();//地址
+        String mnemonic = didAccount.getMnemonic();//助记词
+        String privateKey = didAccount.getPrivateKey();//私钥
+        String publicKey = didAccount.getPublicKey();//公钥
+        System.out.println(address);
+        System.out.println(mnemonic);
+        System.out.println(privateKey);
+        System.out.println(publicKey);
+    }
+</code></pre><h4 id="3-2-">3. 2 根据私钥导出钱包</h4>
+<ul>
+<li><p>方法名 ：<code>exportByPrivateKey()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>DIDAccount</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">返回值</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">返回值说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">publicKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">公钥</td>
+</tr>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">钱包地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 根据私钥导出钱包
+    * */
+    @Test
+    public void exportByPrivateKey() {
+        String privateKey = &quot;4CDA5C9D041CD0281E5724A106B84977071A454FD56EA1294985DE76210073EA&quot;;
+        DIDAccount didAccount = elaDIDSideWalletService.exportByPrivateKey(privateKey);
+        String address = didAccount.getAddress();//地址
+        String privateKey = didAccount.getPrivateKey();//私钥
+        String publicKey = didAccount.getPublicKey();//公钥
+        System.out.println(address);
+        System.out.println(privateKey);
+        System.out.println(publicKey);
+    }
+</code></pre><h4 id="3-3-">3. 3 根据助记词导出钱包</h4>
+<ul>
+<li><p>方法名 ：<code>exportByMnemonic()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">mnemonic</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">助记词</td>
+</tr>
+<tr>
+<td style="text-align:center">pwd</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">助记词密码（选填）</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>DIDAccount</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">返回值</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">返回值说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">publicKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">公钥</td>
+</tr>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">亦来云钱包地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 根据 助记词导出钱包
+    * */
+    @Test
+    public void exportByMnemonic() {
+        String mnemonic = &quot;satoshi patient awake crush great behave glide melody neither can version bargain&quot;;
+        DIDAccount didAccount = elaDIDSideWalletService.exportByMnemonic(mnemonic);
+        String address = didAccount.getAddress();//地址
+        String privateKey = didAccount.getPrivateKey();//私钥
+        String publicKey = didAccount.getPublicKey();//公钥
+        System.out.println(address);
+        System.out.println(mnemonic);
+        System.out.println(privateKey);
+        System.out.println(publicKey);
+    }
+</code></pre><h4 id="3-4-">3. 4 根据地址获取余额</h4>
+<ul>
+<li><p>方法名 ：<code>balance()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：余额</p>
+</li>
+<li><p>示例代码</p>
+</li>
+</ul>
+<pre><code>    /*
+     * 获取余额
+    * */
+    @Test
+    public void balance() {
+        String address = &quot;EaYijL4HLkqMHbUNQCbArgmZjsNNPMAaXk&quot;;
+        String balance = elaDIDSideWalletService.balance(address);
+        System.out.println(balance);
+    }
+
+</code></pre><h4 id="3-5-">3. 5 转账</h4>
+<ul>
+<li><p>方法名 ：<code>transfer()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privatekey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">接收者地址</td>
+</tr>
+<tr>
+<td style="text-align:center">value</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">转出金额</td>
+</tr>
+<tr>
+<td style="text-align:center">memo</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">备注</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明： 交易txid</p>
+</li>
+</ul>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /**
+     * 转账
+     */
+    @Test
+    public void transfer() throws Exception {
+        String privateKey = &quot;4CDA5C9D041CD0281E5724A106B84977071A454FD56EA1294985DE76210073EA&quot;;
+        String to = &quot;ENHFT9Xuo3Z1bJn5d2pLfpndwVez7sVG5H&quot;;
+        String value = &quot;0.1&quot;;
+        String txid = elaDIDSideWalletService.transfer(privateKey, to, value);
+        System.out.println(txid);
+    }
+</code></pre><h4 id="3-6-">3. 6 查询交易详情</h4>
+<ul>
+<li><p>方法名 ：<code>transactionInfo()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">txid</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易txid</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>Map</code></p>
+</li>
+<li><p>返回说明:交易信息</p>
+</li>
+</ul>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>     /*
+    * 获取交易信息
+    * */
+    @Test
+    public void transactionInfo() {
+
+        Map&lt;String, Object&gt; map = elaDIDSideWalletService.transactionInfo(&quot;b10fe88db3f23565efc93fa7a6549d1a5618855caecee549715fadab087c99b3&quot;);
+
+    }
+</code></pre><h4 id="3-7-">3. 7 地址校验</h4>
+<ul>
+<li><p>方法名 ：<code>checkAddr()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>Boolean</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">true 有效地址；false 无效地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 检查地址是否正确
+    * */
+    @Test
+    public void checkAddr() {
+        String address = &quot;EV4UTSLGpFMM8Y5jjZp4TLVc9QaNFHGosC&quot;;
+        boolean checkAddr = elaDIDSideWalletService.checkAddr(address);
+        System.out.println(checkAddr);
+    }
+</code></pre><h4 id="3-8-txid-">3. 8 根据txid查询交易状态</h4>
+<ul>
+<li><p>方法名 ：<code>getTransferStatus()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">txid</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">txid</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>Boolean</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  true 交易成功；false 交易失败；空（null） 交易打包中</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 获取交易状态
+    * */
+    @Test
+    public void getTransferStatus() {
+        String txid = &quot;493cca9ff816afec74d9ab7e119c013f2536b6fa0ca63d5b47a914583ca3b860&quot;;
+        Boolean transferStatus = elaDIDSideWalletService.getTransferStatus(txid);
+        System.out.println(transferStatus);
+    }
+</code></pre><h4 id="3-9-did-">3. 9 did侧链向主链提现</h4>
+<ul>
+<li><p>方法名 ：<code>crossTransfer()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">did侧链私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">_to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">主链钱包地址</td>
+</tr>
+<tr>
+<td style="text-align:center">_value</td>
+<td style="text-align:center">Double</td>
+<td style="text-align:center">提现金额</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：交易txid</p>
+</li>
+</ul>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    //did侧链向主链提现
+    @Test
+    public void crossTransfer() throws Exception {
+        String privateKey = &quot;b14f0ad5a014ee82080ed9234ee6cae3440ae4fe93903dcd836b53d71d82ab4e&quot;;
+        String _to = &quot;ENHFT9Xuo3Z1bJn5d2pLfpndwVez7sVG5H&quot;;
+        Double _value = 4.0;
+        String str = elaDIDSideWalletService.crossTransfer(privateKey, _to, _value);
+        System.out.println(str);
+    }
+
+</code></pre><h3 id="4-eth-side-wallet">4. eth side wallet</h3>
+<h4 id="4-1-">4. 1 创建钱包</h4>
+<ul>
+<li><p>方法名 ：<code>create()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">mnemonicType</td>
+<td style="text-align:center">MnemonicType</td>
+<td style="text-align:center">助记词类型（目前支持中文、英文）</td>
+</tr>
+<tr>
+<td style="text-align:center">pwd</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">助记词密码（选填）</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>EthAccount</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">返回值</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">返回值说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">publicKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">公钥</td>
+</tr>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">钱包地址</td>
+</tr>
+<tr>
+<td style="text-align:center">mnemonic</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">助记词</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 创建钱包
+    * */
+    @Test
+    public void createTest() {
+        EthAccount ethAccount =elaETHSideWalletService.create(HdSupport.MnemonicType.ENGLISH);
+        String address = ethAccount.getAddress();//地址
+        String mnemonic = ethAccount.getMnemonic();//助记词
+        String privateKey = ethAccount.getPrivateKey();//私钥
+        String publicKey = ethAccount.getPublicKey();//公钥
+        System.out.println(address);
+        System.out.println(mnemonic);
+        System.out.println(privateKey);
+        System.out.println(publicKey);
+    }
+</code></pre><h4 id="4-2-">4. 2 根据私钥导出钱包</h4>
+<ul>
+<li><p>方法名 ：<code>exportByPrivateKey()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>EthAccount</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">返回值</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">返回值说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">publicKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">公钥</td>
+</tr>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">钱包地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 根据私钥导出钱包
+    * */
+    @Test
+    public void exportByPrivateKey() {
+        String privateKey = &quot;d6ed30f07efa7ccd641186e752f827f9f4901c797d3b614e9f6aee56a031147f&quot;;
+        EthAccount elaAccount = elaETHSideWalletService.exportByPrivateKey(privateKey);
+        String address = elaAccount.getAddress();//地址
+        String publicKey = elaAccount.getPublicKey();//公钥
+        System.out.println(address);
+        System.out.println(privateKey);
+        System.out.println(publicKey);
+    }
+</code></pre><h4 id="4-3-">4. 3 根据助记词导出钱包</h4>
+<ul>
+<li><p>方法名 ：<code>exportByMnemonic()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">mnemonic</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">助记词</td>
+</tr>
+<tr>
+<td style="text-align:center">pwd</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">助记词密码（选填）</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>EthAccount</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">返回值</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">返回值说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">publicKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">公钥</td>
+</tr>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">钱包地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 根据 助记词导出钱包
+    * */
+    @Test
+    public void exportByMnemonic() {
+        String mnemonic = &quot;hospital educate still slam december hidden video what member next raise junior&quot;;
+        EthAccount ethAccount = elaETHSideWalletService.exportByMnemonic(mnemonic);
+        String address = ethAccount.getAddress();//地址
+        String privateKey = ethAccount.getPrivateKey();//私钥
+        String publicKey = ethAccount.getPublicKey();//公钥
+        System.out.println(address);
+        System.out.println(mnemonic);
+        System.out.println(privateKey);
+        System.out.println(publicKey);
+    }
+</code></pre><h4 id="4-4-">4. 4 根据地址获取余额</h4>
+<ul>
+<li><p>方法名 ：<code>balance()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  余额</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 获取余额
+    * */
+    @Test
+    public void balance() throws IOException {
+        String address = &quot;0x6e55aaebaefe953931fcfc251079b874484e69ed&quot;;
+        String balance = elaETHSideWalletService.balance(address);
+        System.out.println(balance);
+    }
+
+</code></pre><h4 id="4-5-">4. 5 转账</h4>
+<ul>
+<li><p>方法名 ：<code>transfer()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privatekey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">接收者地址</td>
+</tr>
+<tr>
+<td style="text-align:center">value</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">转出金额</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：交易hash</p>
+</li>
+<li><p>示例代码</p>
+</li>
+</ul>
+<pre><code>    /**
+     * eth转账
+     */
+    @Test
+    public void transfer() throws Exception {
+        String privateKey=&quot;8194cfe0650f004785b176f83a88af84ed73087a72609174605ef87054272811&quot;;
+        String _to=&quot;0x6e55aaebaefe953931fcfc251079b874484e69ed&quot;;
+        String _value=&quot;100&quot;;
+
+        String hash = elaETHSideWalletService.transfer(privateKey, _to,_value,gasPrice,gasLimit);
+        System.out.println(hash);
+
+    }
+</code></pre><h4 id="4-6-hash-">4. 6 根据hash查询交易详情</h4>
+<ul>
+<li><p>方法名 ：<code>transactionInfo()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">hash</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易hash</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>TransactionInfo</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">transactionHash</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易hash</td>
+</tr>
+<tr>
+<td style="text-align:center">transactionIndex</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">在一个区块中交易序号</td>
+</tr>
+<tr>
+<td style="text-align:center">blockHash</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">区块hash</td>
+</tr>
+<tr>
+<td style="text-align:center">blockNumber</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">区块好</td>
+</tr>
+<tr>
+<td style="text-align:center">status</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易状态(1 交易成功；0 交易失败；空(null) 等待打包确认)</td>
+</tr>
+<tr>
+<td style="text-align:center">from</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">发送方地址</td>
+</tr>
+<tr>
+<td style="text-align:center">to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">接收方地址</td>
+</tr>
+<tr>
+<td style="text-align:center">value</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">交易金额(eth)</td>
+</tr>
+<tr>
+<td style="text-align:center">timestamp</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">交易时间戳</td>
+</tr>
+<tr>
+<td style="text-align:center">nonce</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">交易随机数</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gas价格</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">gasUsed</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">实际使用gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">logs</td>
+<td style="text-align:center">List<Log></td>
+<td style="text-align:center">交易日志</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 获取交易信息
+    * */
+    @Test
+    public void transactionInfo() throws IOException {
+        String hash = &quot;0xb4628a779ce00cb5dd0b321325554802f701600516fed8c292511c831151f06a&quot;;
+        TransactionInfo transactionInfo = elaETHSideWalletService.transactionInfo(hash);
+        System.out.println(JSON.toJSONString(transactionInfo));
+    }
+</code></pre><h4 id="4-7-">4. 7 地址校验</h4>
+<ul>
+<li><p>方法名 ：<code>checkAddr()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">address</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>Boolean</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">true 有效地址；false 无效地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+   * 检查地址是否正确
+   * */
+    @Test
+    public void checkAddr() {
+        String address = &quot;0x6e55aaebaefe953931fcfc251079b874484e69ed&quot;;
+        boolean checkAddr = elaETHSideWalletService.checkAddr(address);
+        System.out.println(checkAddr);
+    }
+</code></pre><h4 id="4-8-hash-">4. 8 根据hash查询交易状态</h4>
+<ul>
+<li><p>方法名 ：<code>getTransferStatus()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">hash</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">hash</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>Boolean</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  true 交易成功；false 交易失败；空（null） 交易打包中</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 获取交易状态
+    * */
+    @Test
+    public void getTransferStatus() throws IOException {
+        String txid = &quot;0xb4628a779ce00cb5dd0b321325554802f701600516fed8c292511c831151f06a&quot;;
+        Boolean transferStatus = elaETHSideWalletService.getTransferStatus(txid);
+        System.out.println(transferStatus);
+    }
+</code></pre><h4 id="4-9-eth-">4. 9 eth侧链向主链提现</h4>
+<ul>
+<li><p>方法名 ：<code>crossTransfer()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">eth侧链私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">_to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">主链钱包地址</td>
+</tr>
+<tr>
+<td style="text-align:center">_value</td>
+<td style="text-align:center">BigDecimal</td>
+<td style="text-align:center">提现金额</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">提现金额</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">提现金额</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：交易hash</p>
+</li>
+</ul>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    //did侧链向主链提现
+    @Test
+    public void crossTransfer() {
+
+        String privateKey = &quot;b14f0ad5a014ee82080ed9234ee6cae3440ae4fe93903dcd836b53d71d82ab4e&quot;;
+        String _to = &quot;ENHFT9Xuo3Z1bJn5d2pLfpndwVez7sVG5H&quot;;
+        BigDecimal _value = BigDecimal.valueOf(10);
+        String hash = elaETHSideWalletService.crossTransfer(privateKey, _to, _value, gasPrice, gasLimit);
+        System.out.println(hash);
+    }
+</code></pre>
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+		$('#tree_1_a').attr("href","index.html");
+});
+//-->
+</SCRIPT>

@@ -1,0 +1,1490 @@
+<html>
+  <head>
+	  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>AssetManagementAPI</title>
+		<link href="toc/style/github-bf51422f4bb36427d391e4b75a1daa083c2d840e.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/style/github2-d731afd4f624c99a4b19ad69f3083cd6d02b81d5.css" media="all" rel="stylesheet" type="text/css"/>
+		<link href="toc/css/zTreeStyle/zTreeStyle.css" media="all" rel="stylesheet" type="text/css"/>
+	  <style>
+		pre {
+		    counter-reset: line-numbering;
+		    border: solid 1px #d9d9d9;
+		    border-radius: 0;
+		    background: #fff;
+		    padding: 0;
+		    line-height: 23px;
+		    margin-bottom: 30px;
+		    white-space: pre;
+		    overflow-x: auto;
+		    word-break: inherit;
+		    word-wrap: inherit;
+		}
+
+		pre a::before {
+		  content: counter(line-numbering);
+		  counter-increment: line-numbering;
+		  padding-right: 1em; /* space after numbers */
+		  width: 25px;
+		  text-align: right;
+		  opacity: 0.7;
+		  display: inline-block;
+		  color: #aaa;
+		  background: #eee;
+		  margin-right: 16px;
+		  padding: 2px 10px;
+		  font-size: 13px;
+		  -webkit-touch-callout: none;
+		  -webkit-user-select: none;
+		  -khtml-user-select: none;
+		  -moz-user-select: none;
+		  -ms-user-select: none;
+		  user-select: none;
+		}
+
+		pre a:first-of-type::before {
+		  padding-top: 10px;
+		}
+
+		pre a:last-of-type::before {
+		  padding-bottom: 10px;
+		}
+
+		pre a:only-of-type::before {
+		  padding: 10px;
+		}
+
+		.highlight { background-color: #ffffcc } /* RIGHT */
+		</style>
+  </head>
+  <body>
+	  <div>
+				<div style='width:25%;'>
+						<ul id="tree" class="ztree" style='width:100%'>
+
+						</ul>
+				</div>
+        <div id='readme' style='width:70%;margin-left:20%;'>
+          	<article class='markdown-body'>
+            	<p>﻿[toc]</p>
+<h1 id="assetmanagement-api">AssetManagement API</h1>
+<h2 id="-"><strong>介绍</strong></h2>
+<p>AssetManagement API是对AssetManagement模块的封装。使用AssetManagement API可完成对资产的管理、确权。快速开发请阅读以下文档。</p>
+<h2 id="api"><strong>API</strong></h2>
+<h2 id="-"><strong>目录</strong></h2>
+<ul>
+<li><a href="#-创建合约">创建合约</a></li>
+<li><a href="#-创建资产">创建资产</a></li>
+<li><a href="#-批量创建资产">批量创建资产</a></li>
+<li><a href="#-查询拥有资产数量">查询拥有资产数量</a></li>
+<li><a href="#-查询资产的拥有者地址">查询资产的拥有者地址</a></li>
+<li><a href="#-安全转移资产">安全转移资产</a></li>
+<li><a href="#-转移资产">转移资产</a></li>
+<li><a href="#-资产授权">资产授权</a></li>
+<li><a href="#-资产批量授权">资产批量授权</a></li>
+<li><a href="#-合约名字">合约名字</a></li>
+<li><a href="#-合约拥有者">合约拥有者</a></li>
+<li><a href="#-合约简称">合约简称</a></li>
+<li><a href="#-查询tokenId的data信息">查询tokenId的data信息</a></li>
+<li><a href="#-查询总发行token数量">查询总发行token数量</a></li>
+<li><a href="#-根据下标查询tokenId">根据下标查询tokenId</a></li>
+<li><a href="#-根据资产id获取授权地址">根据资产id获取授权地址</a></li>
+<li><a href="#-获取资产合约拥有者地址">获取资产合约拥有者地址</a></li>
+<li><a href="#-根据地址查询所拥有资产id">根据地址查询所拥有资产id</a></li>
+<li><a href="#-根据资产id查询资产拥有者">根据资产id查询资产拥有者</a></li>
+<li><a href="#-根据资产id查询资产信息">根据资产id查询资产信息</a></li>
+<li><a href="#-获取合约信息">获取合约信息</a></li>
+<li><a href="#-销毁资产">销毁资产</a></li>
+<li><a href="#-根据地址查询资产数量">根据地址查询资产数量</a></li>
+<li><a href="#-根据hash查询交易状态">根据hash查询交易状态</a></li>
+</ul>
+<hr>
+<h3 id="-">创建合约</h3>
+<ul>
+<li><p>方法名 ：<code>deploy()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gas</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">name</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产名称</td>
+</tr>
+<tr>
+<td style="text-align:center">symbol</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产标识符</td>
+</tr>
+<tr>
+<td style="text-align:center">metadata</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">单元数据</td>
+</tr>
+<tr>
+<td style="text-align:center">destroyed</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">是否可销毁</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明： 资产合约地址</p>
+</li>
+<li><p>示例代码</p>
+</li>
+</ul>
+<pre><code>
+    /**
+     * 创建资产合约
+     */
+    @Test
+    public void deploy() throws Exception {
+        String privateKey = &quot;f4b7957d7f11b014a77ad80e5d03d1c732f51c08ec7925c3d6175e19d099d832&quot;;//私钥
+        String name = &quot;Test Asset&quot;;//资产名称
+        String symbol = &quot;TA&quot;;//
+        String _metadata = &quot;TestData&quot;;
+        String assetAddress = assetManagementService.deploy(privateKey, gasPrice, gasLimit, name, symbol, _metadata);
+        System.out.println(assetAddress);//资产合约地址
+        //0xe8699073280c2f8bf6a47a2dd3c2ba4dcabd22ce
+    }
+
+</code></pre><h3 id="-">创建资产</h3>
+<ul>
+<li><p>方法名 ：<code>mint()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">_to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产归属者地址</td>
+</tr>
+<tr>
+<td style="text-align:center">_info</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产信息</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenid</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">资产id</td>
+</tr>
+<tr>
+<td style="text-align:center">_isTransfer</td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">资产是否可转移</td>
+</tr>
+<tr>
+<td style="text-align:center">_isBurn</td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">资产是否可销毁</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明： </p>
+</li>
+</ul>
+<blockquote>
+<p>  交易hash</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /**
+     * 创建资产
+     */
+    @Test
+    public void mint() throws Exception {
+        String assetAddress = &quot;0xe8699073280c2f8bf6a47a2dd3c2ba4dcabd22ce&quot;;//资产合约地址
+        String privateKey = &quot;f4b7957d7f11b014a77ad80e5d03d1c732f51c08ec7925c3d6175e19d099d832&quot;;//私钥
+        BigInteger tokenid = BigInteger.valueOf(1001);
+        String to = &quot;0xA258f950203b46A4036CE4c71BC64CE1d010EaaC&quot;;//资产拥有者
+        String info = &quot;testInfo&quot;;//资产信息
+        String hash = assetManagementService.mint(assetAddress, privateKey, gasPrice, gasLimit, to, info, tokenid, true, true);
+        System.out.println(hash);
+    }
+</code></pre><h3 id="-">批量创建资产</h3>
+<ul>
+<li><p>方法名 ：<code>mintWithArray()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">_to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产归属者地址</td>
+</tr>
+<tr>
+<td style="text-align:center">_info</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产信息</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenid</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center">资产id</td>
+</tr>
+<tr>
+<td style="text-align:center">_isTransfer</td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">资产是否可转移</td>
+</tr>
+<tr>
+<td style="text-align:center">_isBurn</td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">资产是否可销毁</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  交易hash</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /**
+     * 批量创建资产
+     */
+    @Test
+    public void mintWithArray() throws Exception {
+        String assetAddress = &quot;0xe8699073280c2f8bf6a47a2dd3c2ba4dcabd22ce&quot;;//资产合约地址
+        String privateKey = &quot;f4b7957d7f11b014a77ad80e5d03d1c732f51c08ec7925c3d6175e19d099d832&quot;;//私钥
+        List&lt;BigInteger&gt; list = new ArrayList&lt;&gt;();//资产id数组
+        list.add(BigInteger.valueOf(1001));
+        list.add(BigInteger.valueOf(1002));
+        list.add(BigInteger.valueOf(1003));
+        String to = &quot;0xA258f950203b46A4036CE4c71BC64CE1d010EaaC&quot;;//资产拥有者
+        String info = &quot;testInfo&quot;;//资产信息
+        String hash = assetManagementService.mintWithArray(assetAddress, privateKey, gasPrice, gasLimit, to, info, list, true, true);
+        System.out.println(hash);
+    }
+
+</code></pre><h3 id="-">查询拥有资产数量</h3>
+<ul>
+<li><p>方法名 ：<code>balanceOf()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">拥有者地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>BigInteger</code></p>
+</li>
+<li><p>返回说明： 数量</p>
+</li>
+</ul>
+<h3 id="-">查询资产的拥有者地址</h3>
+<ul>
+<li><p>方法名 ：<code>getTokenOwner()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">number</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明： 拥有者地址</p>
+</li>
+</ul>
+<h3 id="-">安全转移资产</h3>
+<ul>
+<li><p>方法名 ：<code>safeTransferFrom()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">from</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">发起方地址</td>
+</tr>
+<tr>
+<td style="text-align:center">to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">接收地址</td>
+</tr>
+<tr>
+<td style="text-align:center">data</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">若指定表示只能转移给指定合约</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasPrice</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">gasLimit</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明： hash</p>
+</li>
+</ul>
+<h3 id="-">转移资产</h3>
+<ul>
+<li><p>方法名 ：<code>transfer()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">_to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产归属者地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenid</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">资产id</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  交易hash</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+   * 转移资产
+   *
+   * */
+    @Test
+    public void transfer() throws Exception {
+        String assetAddress = &quot;0xe8699073280c2f8bf6a47a2dd3c2ba4dcabd22ce&quot;;//资产合约地址
+        String privateKey = &quot;9fab7194e57f483c9bf27a8583c0abf4488a64529a12e8bfec4b76efbe66732a&quot;;//私钥
+        BigInteger tokenid=BigInteger.valueOf(1001);//资产id
+        String from = &quot;0xA258f950203b46A4036CE4c71BC64CE1d010EaaC&quot;;//资产拥有者
+        String to = &quot;0x21f017BA0937426e8d68417b59658e2DC74c8936&quot;;//资产接收者
+        String hash = assetManagementService.transfer(assetAddress, privateKey, gasPrice, gasLimit, from, to, tokenid);
+        System.out.println(hash);//资产合约地址
+    }
+</code></pre><h3 id="-">批量转移资产</h3>
+<ul>
+<li><p>方法名 ：<code>transferWithAarry()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">_to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产归属者地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenids</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center">资产id</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  交易hash</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 批量转移资产
+    *
+    * */
+    @Test
+    public void transferWithAarry() throws Exception {
+        String assetAddress = &quot;0xe8699073280c2f8bf6a47a2dd3c2ba4dcabd22ce&quot;;//资产合约地址
+        String privateKey = &quot;9fab7194e57f483c9bf27a8583c0abf4488a64529a12e8bfec4b76efbe66732a&quot;;//私钥
+        List&lt;BigInteger&gt; list = new ArrayList&lt;&gt;();//资产id数组
+        list.add(BigInteger.valueOf(1002));
+        String from = &quot;0xA258f950203b46A4036CE4c71BC64CE1d010EaaC&quot;;//资产拥有者
+        String to = &quot;0x21f017BA0937426e8d68417b59658e2DC74c8936&quot;;//资产接收者
+        String hash = assetManagementService.transferWithAarry(assetAddress, privateKey, gasPrice, gasLimit, from, to, list);
+        System.out.println(hash);
+    }
+</code></pre><h3 id="-">资产授权</h3>
+<ul>
+<li><p>方法名 ：<code>approve()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">_to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">授权地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenid</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">资产id</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  交易hash</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /**
+     * 资产授权
+     */
+    @Test
+    public void approve() throws Exception {
+        String assetAddress = &quot;0xe8699073280c2f8bf6a47a2dd3c2ba4dcabd22ce&quot;;//资产合约地址
+        String privateKey = &quot;f4b7957d7f11b014a77ad80e5d03d1c732f51c08ec7925c3d6175e19d099d832&quot;;//私钥
+        BigInteger tokenid=BigInteger.valueOf(1003);//资产id
+        String to = &quot;0x21f017BA0937426e8d68417b59658e2DC74c8936&quot;;//授权地址者
+        String hash = assetManagementService.approve(assetAddress, privateKey, gasPrice, gasLimit, to, tokenid);
+        System.out.println(hash);
+    }
+</code></pre><h3 id="-">资产批量授权</h3>
+<ul>
+<li><p>方法名 ：<code>approveWithAarry()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">privateKey</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">私钥</td>
+</tr>
+<tr>
+<td style="text-align:center">gasPrice</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas</td>
+</tr>
+<tr>
+<td style="text-align:center">gasLimit</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">gas限制</td>
+</tr>
+<tr>
+<td style="text-align:center">_to</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">授权地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenids</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center">资产id</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明： </p>
+</li>
+</ul>
+<blockquote>
+<p>  交易hash</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /**
+     * 批量资产授权
+     */
+    @Test
+    public void approveWithAarry() throws Exception {
+        String assetAddress = &quot;0xe8699073280c2f8bf6a47a2dd3c2ba4dcabd22ce&quot;;//资产合约地址
+        String privateKey = &quot;f4b7957d7f11b014a77ad80e5d03d1c732f51c08ec7925c3d6175e19d099d832&quot;;//私钥
+        List&lt;BigInteger&gt; list = new ArrayList&lt;&gt;();//资产id数组
+        list.add(BigInteger.valueOf(1002));
+        String to = &quot;0x21f017BA0937426e8d68417b59658e2DC74c8936&quot;;//授权地址者
+        String hash = assetManagementService.approveWithAarry(assetAddress, privateKey, gasPrice, gasLimit, to, list);
+        System.out.println(hash);
+    }
+</code></pre><h3 id="-">合约名字</h3>
+<ul>
+<li><p>方法名 ：<code>getContractName()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明： </p>
+</li>
+</ul>
+<blockquote>
+<p>  合约名称</p>
+</blockquote>
+<h3 id="-">合约拥有者</h3>
+<ul>
+<li><p>方法名 ：<code>getContractOwner()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明： </p>
+</li>
+</ul>
+<blockquote>
+<p>  合约拥有者</p>
+</blockquote>
+<h3 id="-">合约简称</h3>
+<ul>
+<li><p>方法名 ：<code>getContractSymbol()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明： </p>
+</li>
+</ul>
+<blockquote>
+<p>  合约简称（符号）</p>
+</blockquote>
+<h3 id="-tokenid-data-">查询tokenId的data信息</h3>
+<ul>
+<li><p>方法名 ：<code>getTokenURI()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">tokenId</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明： </p>
+</li>
+</ul>
+<blockquote>
+<p>  uri</p>
+</blockquote>
+<h3 id="-token-">查询总发行token数量</h3>
+<ul>
+<li><p>方法名 ：<code>totalSupply()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>number</code></p>
+</li>
+<li><p>返回说明： </p>
+</li>
+</ul>
+<blockquote>
+<p>  总发行量</p>
+</blockquote>
+<h3 id="-tokenid">根据下标查询tokenId</h3>
+<ul>
+<li><p>方法名 ：<code>tokenByIndex()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">index</td>
+<td style="text-align:center">number</td>
+<td style="text-align:center">index</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>number</code></p>
+</li>
+<li><p>返回说明： </p>
+</li>
+</ul>
+<blockquote>
+<p>  tokenId</p>
+</blockquote>
+<h3 id="-id-">根据资产id获取授权地址</h3>
+<p>方法名 ：<code>getApproved()</code></p>
+<p>参数说明:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenids</td>
+<td style="text-align:center">List</td>
+<td style="text-align:center">资产id</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  授权地址</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 获取授权地址
+    * */
+    @Test
+    public void getApproved() throws Exception {
+        String assetAddress = &quot;0xe8699073280c2f8bf6a47a2dd3c2ba4dcabd22ce&quot;;//资产合约地址
+        BigInteger tokenid = BigInteger.valueOf(1002);
+        String approvedAddress = assetManagementService.getApproved(assetAddress, tokenid);
+        System.out.println(approvedAddress);
+    }
+</code></pre><h3 id="-">获取资产合约拥有者地址</h3>
+<ul>
+<li><p>方法名 ：<code>owner()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明： </p>
+</li>
+</ul>
+<blockquote>
+<p>  资产合约拥有者地址</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 资产合约拥有者
+    * */
+    @Test
+    public void owner() throws Exception {
+        String assetAddress = &quot;0xe8699073280c2f8bf6a47a2dd3c2ba4dcabd22ce&quot;;//资产合约地址
+        String owner = assetManagementService.owner(assetAddress);
+        System.out.println(owner);
+    }
+</code></pre><h3 id="-id">根据地址查询所拥有资产id</h3>
+<ul>
+<li><p>方法名 ：<code>tokenIds()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">拥有者地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>List&lt;BigInteger&gt;</code></p>
+</li>
+<li><p>返回说明： </p>
+</li>
+</ul>
+<blockquote>
+<p>  资产id数组</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>     /*
+    * 拥有的资产id
+    *
+    * */
+    @Test
+    public void tokenIds() throws Exception {
+        String assetAddress = &quot;0xe8699073280c2f8bf6a47a2dd3c2ba4dcabd22ce&quot;;//资产合约地址
+        String owner = &quot;0x21f017BA0937426e8d68417b59658e2DC74c8936&quot;;
+        List&lt;BigInteger&gt; tokenIds = assetManagementService.tokenIds(assetAddress, owner);
+        System.out.println(JSON.toJSONString(tokenIds));
+    }
+</code></pre><h3 id="-id-">根据资产id查询资产拥有者</h3>
+<ul>
+<li><p>方法名 ：<code>getTokenOwner()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">资产id</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  资产拥有者</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>     /*
+    * 资产拥有者
+    * */
+    @Test
+    public void ownerOf() throws Exception {
+        String assetAddress = &quot;0xe8699073280c2f8bf6a47a2dd3c2ba4dcabd22ce&quot;;//资产合约地址
+        BigInteger tokenid = BigInteger.valueOf(1002);
+        String ownerOf = assetManagementService.getTokenOwner(assetAddress, tokenid);
+        System.out.println(ownerOf);
+    }
+</code></pre><h3 id="-id-">根据资产id查询资产信息</h3>
+<ul>
+<li><p>方法名 ：<code>getAssetInfo()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">资产id</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>AssetInfoDto</code></p>
+</li>
+<li><p>返回说明： </p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">返回值</th>
+<th style="text-align:center">返回值类型</th>
+<th style="text-align:center">返回值说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产拥有者地址</td>
+</tr>
+<tr>
+<td style="text-align:center">isTransfer</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">是否可转移</td>
+</tr>
+<tr>
+<td style="text-align:center">isBurn</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">是否可销毁</td>
+</tr>
+<tr>
+<td style="text-align:center">data</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">资产信息</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 资产信息
+    * */
+    @Test
+    public void assetInfo() throws Exception {
+        String assetAddress = &quot;0xe8699073280c2f8bf6a47a2dd3c2ba4dcabd22ce&quot;;//资产合约地址
+        BigInteger tokenid = BigInteger.valueOf(1002);
+        AssetInfoDto assetInfoDto = assetManagementService.assetInfo(assetAddress, tokenid);
+        System.out.println(JSON.toJSONString(assetInfoDto));
+    }
+</code></pre><h3 id="-">获取合约信息</h3>
+<ul>
+<li><p>方法名 ：<code>getContractMetadata()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>ContractInfoDto</code></p>
+</li>
+<li><p>返回说明： </p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">返回值</th>
+<th style="text-align:center">返回值类型</th>
+<th style="text-align:center">返回值说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">name</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">合约名称</td>
+</tr>
+<tr>
+<td style="text-align:center">symbol</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">合约标识符</td>
+</tr>
+<tr>
+<td style="text-align:center">metadata</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">合约单元数据</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">合约拥有者</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 资产合约信息
+    * */
+    @Test
+    public void getContractMetadata() throws Exception {
+        String assetAddress = &quot;0xe8699073280c2f8bf6a47a2dd3c2ba4dcabd22ce&quot;;//资产合约地址
+        ContractInfoDto contractInfoDto = assetManagementService.getContractMetadata(assetAddress);
+        System.out.println(JSON.toJSONString(contractInfoDto));
+    }
+</code></pre><h3 id="-">销毁资产</h3>
+<ul>
+<li><p>方法名 ：<code>burn()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">tokenId</td>
+<td style="text-align:center">BigInteger</td>
+<td style="text-align:center">资产id</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>String</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  hash值</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /**
+     * 资产授权
+     */
+    @Test
+    public void burn() throws Exception {
+        String assetAddress = &quot;0xe8699073280c2f8bf6a47a2dd3c2ba4dcabd22ce&quot;;//资产合约地址
+        String privateKey = &quot;f4b7957d7f11b014a77ad80e5d03d1c732f51c08ec7925c3d6175e19d099d832&quot;;//私钥
+        BigInteger tokenid=BigInteger.valueOf(1003);//资产id
+        String owner = &quot;0x21f017BA0937426e8d68417b59658e2DC74c8936&quot;;//资产拥有者地址
+        String hash = assetManagementService.burn(assetAddress, privateKey, gasPrice, gasLimit, owner, tokenid);
+        System.out.println(hash);
+    }
+</code></pre><h3 id="-">根据地址查询资产数量</h3>
+<ul>
+<li><p>方法名 ：<code>balanceOf()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">contractAddress</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">资产合约地址</td>
+</tr>
+<tr>
+<td style="text-align:center">owner</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">拥有者地址</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>BigInteger</code></p>
+</li>
+<li><p>返回说明： </p>
+</li>
+</ul>
+<blockquote>
+<p>  资产数量</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+    * 拥有资产数量
+    *
+    * */
+    @Test
+    public void balanceOf() throws Exception {
+        String assetAddress = &quot;0xe8699073280c2f8bf6a47a2dd3c2ba4dcabd22ce&quot;;//资产合约地址
+        String owner = &quot;0x21f017BA0937426e8d68417b59658e2DC74c8936&quot;;
+        BigInteger balanceOf = assetManagementService.balanceOf(assetAddress, owner);
+        System.out.println(balanceOf);
+    }
+</code></pre><h3 id="-hash-">根据hash查询交易状态</h3>
+<ul>
+<li><p>方法名 ：<code>getTransferStatus()</code></p>
+</li>
+<li><p>参数说明:</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">参数名</th>
+<th style="text-align:center">参数类型</th>
+<th style="text-align:center">参数说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">hash</td>
+<td style="text-align:center">String</td>
+<td style="text-align:center">hash</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>返回值类型：<code>Boolean</code></p>
+</li>
+<li><p>返回说明：</p>
+</li>
+</ul>
+<blockquote>
+<p>  true 交易成功；false 交易失败；空（null） 交易打包中</p>
+</blockquote>
+<ul>
+<li>示例代码</li>
+</ul>
+<pre><code>    /*
+   * 获取交易状态
+   * */
+    @Test
+    public void getTransferStatus() throws Exception {
+        String hash = &quot;0x7cc931ff895229f902061d2aafcefbeea4fa1e6ba69c834ecd8006069375f8f7&quot;;//资产合约地址
+        boolean falg = assetManagementService.getTransferStatus(hash);
+        System.out.println(falg);
+    }
+</code></pre>
+          	</article>
+        </div>
+		</div>
+  </body>
+</html>
+<script type="text/javascript" src="toc/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="toc/js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="toc/js/ztree_toc.js"></script>
+<script type="text/javascript" src="toc_conf.js"></script>
+
+<SCRIPT type="text/javascript" >
+<!--
+$(document).ready(function(){
+    var css_conf = eval(markdown_panel_style);
+    $('#readme').css(css_conf)
+    
+    var conf = eval(jquery_ztree_toc_opts);
+		$('#tree').ztree_toc(conf);
+		$('#tree_1_a').attr("href","index.html");
+});
+//-->
+</SCRIPT>
