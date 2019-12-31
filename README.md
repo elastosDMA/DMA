@@ -116,11 +116,11 @@ GasPrice|	交易发送者愿意支付的gas费用的价格。一个单位的gas�
 
 ```
 //安装 SDK 到本地仓库
-mvn install:install-file -Dfile=dma-assetManagement-2.1.4-eth-beta.jar -DgroupId=org.elastos -DartifactId=dma-assetManagement -Dversion=2.1.4-eth-beta -Dpackaging=jar
+mvn install:install-file -Dfile=dma-assetManagement-1.1.0.jar -DgroupId=org.elastos -DartifactId=dma-assetManagement -Dversion=1.1.0 -Dpackaging=jar
 
-mvn install:install-file -Dfile=dma-wallet-2.1.4-eth-beta.jar -DgroupId=org.elastos -DartifactId=dma-wallet -Dversion=2.1.4-eth-beta -Dpackaging=jar
+mvn install:install-file -Dfile=dma-wallet-1.1.0.jar -DgroupId=org.elastos -DartifactId=dma-wallet -Dversion=1.1.0 -Dpackaging=jar
 
-mvn install:install-file -Dfile=dma-utility-2.1.4-eth-beta.jar -DgroupId=org.elastos -DartifactId=dma-utility -Dversion=2.1.4-eth-beta -Dpackaging=jar
+mvn install:install-file -Dfile=dma-utility-1.1.0.jar -DgroupId=org.elastos -DartifactId=dma-utility -Dversion=1.1.0 -Dpackaging=jar
 
 ```
 
@@ -142,18 +142,18 @@ mvn install:install-file -Dfile=dma-utility-2.1.4-eth-beta.jar -DgroupId=org.ela
         <dependency>
             <groupId>org.elastos</groupId>
             <artifactId>dma-base</artifactId>
-            <version>2.1.4-eth-beta</version>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.elastos</groupId>
             <artifactId>dma-service</artifactId>
-            <version>2.1.4-eth-beta</version>
+            <version>1.1.0</version>
         </dependency>
 
         <dependency>
             <groupId>org.elastos</groupId>
             <artifactId>dma-utility</artifactId>
-            <version>2.1.4-eth-beta</version>
+            <version>1.1.0</version>
         </dependency>
 
         <dependency>
