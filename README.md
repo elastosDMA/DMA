@@ -332,24 +332,24 @@ Storage模块基于ipfs实现
 
 ####  1.4 API说明
 
- -  1.1.[ AssetManagement（资产管理）] [1]
- -  1.2.[ Merchant（商家）] [2]
- -  1.3.[ Passport（身份认证）] [3]
- -  1.4.[ Storage（存储）] [4]
- -  1.5.[ Utility（工具）] [5]
- -  1.6.[ Wallet（钱包）] [6]
+ -  1.1.[ AssetManagement（资产管理）][1]
+ -  1.2.[ Merchant（商家）][2]
+ -  1.3.[ Passport（身份认证）][3]
+ -  1.4.[ Storage（存储）][4]
+ -  1.5.[ Utility（工具）][5]
+ -  1.6.[ Wallet（钱包）][6]
  <!---  1.7.[ Payment（支付）] [7]-->
  <!---  1.8. [Message（消息）] [8]-->
  
-[1]: http://www.elastosdma.org/api/AssetManagement%20API.html
-[2]: http://www.elastosdma.org/api/Merchant%20API.html
+[1]: http://www.elastosdma.org/apidoc/AssetManagement%20API.html
+[2]: http://www.elastosdma.org/apidoc/Merchant%20API.html
 
-[3]: http://www.elastosdma.org/api/Passport%20API.html
-[4]: http://www.elastosdma.org/api/Storage%20API.html
-[5]: http://www.elastosdma.org/api/Utility%20API.html
-[6]: http://www.elastosdma.org/api/Wallet%20API.html
-[7]: http://www.elastosdma.org/api/Payment%20API.html
-[8]: http://www.elastosdma.org/api/Message%20API.html
+[3]: http://www.elastosdma.org/apidoc/Passport%20API.html
+[4]: http://www.elastosdma.org/apidoc/Storage%20API.html
+[5]: http://www.elastosdma.org/apidoc/Utility%20API.html
+[6]: http://www.elastosdma.org/apidoc/Wallet%20API.html
+[7]: http://www.elastosdma.org/apidoc/Payment%20API.html
+[8]: http://www.elastosdma.org/apidoc/Message%20API.html
 
 ### 2、Android SDK 开发指南
 
@@ -474,25 +474,25 @@ Storage模块基于ipfs实现
   
 #### 2.5 API详细说明
 
- - 1.1. [AssetManagement（资产管理）] [1]
- - 1.2.[ Merchant（商家）] [2]
- -  1.3. [Message（消息）] [3]
- -  1.4.[ Passport（身份认证）] [4]
- -  1.5.[ Payment（支付）] [5]
- -  1.6. [Storage（存储）] [6]
- -  1.7.[ Utility（工具）] [7]
- -  1.8.[ Wallet（钱包）] [8]
- -  1.9 [环境配置 ] [9]
+ - 1.1. [AssetManagement（资产管理）][1]
+ - 1.2.[ Merchant（商家）][2]
+ -  1.3. [Message（消息）][3]
+ -  1.4.[ Passport（身份认证）][4]
+ -  1.5.[ Payment（支付）][5]
+ -  1.6. [Storage（存储）][6]
+ -  1.7.[ Utility（工具）][7]
+ -  1.8.[ Wallet（钱包）][8]
+ -  1.9 [环境配置 ][9]
     
-[1]: http://www.elastosdma.org/api/AssetManagement%20API.html
-[2]: http://www.elastosdma.org/api/Merchant%20API.html
-[3]: http://www.elastosdma.org/api/Message%20API.html
-[4]: http://www.elastosdma.org/api/Passport%20API.html
-[5]: http://www.elastosdma.org/api/Payment%20API.html
-[6]: http://www.elastosdma.org/api/Storage%20API.html
-[7]: http://www.elastosdma.org/api/Utility%20API.html
-[8]: http://www.elastosdma.org/api/Wallet%20API.html
-[9]: http://www.elastosdma.org/api/index.html
+[1]: http://www.elastosdma.org/apidoc/AssetManagement%20API.html
+[2]: http://www.elastosdma.org/apidoc/Merchant%20API.html
+[3]: http://www.elastosdma.org/apidoc/Message%20API.html
+[4]: http://www.elastosdma.org/apidoc/Passport%20API.html
+[5]: http://www.elastosdma.org/apidoc/Payment%20API.html
+[6]: http://www.elastosdma.org/apidoc/Storage%20API.html
+[7]: http://www.elastosdma.org/apidoc/Utility%20API.html
+[8]: http://www.elastosdma.org/apidoc/Wallet%20API.html
+[9]: http://www.elastosdma.org/apidoc/index.html
 
 ### 3、IOS SDK 开发指南
 
@@ -719,24 +719,24 @@ let reult = charge.mintWithArrayGas(privateKey : privateKey,assetAddress : contr
 
 #### 3.4 API详细说明
 
- -  1.1.[ AssetManagement（资产管理）] [1]
- -  1.2.[ Merchant（商家）] [2]
- -  1.3.[ Passport（身份认证）] [3]
- -  1.4.[ Storage（存储）] [4]
- -  1.5.[ Utility（工具）] [5]
- -  1.6.[ Wallet（钱包）] [6]
- -  1.7.[ Payment（支付）] [7]
- -  1.8. [Message（消息）] [8]
+ -  1.1.[ AssetManagement（资产管理）][1]
+ -  1.2.[ Merchant（商家）][2]
+ -  1.3.[ Passport（身份认证）][3]
+ -  1.4.[ Storage（存储）][4]
+ -  1.5.[ Utility（工具）][5]
+ -  1.6.[ Wallet（钱包）][6]
+ -  1.7.[ Payment（支付）][7]
+ -  1.8. [Message（消息）][8]
  
-[1]: http://www.elastosdma.org/api/AssetManagement%20API.html
-[2]: http://www.elastosdma.org/api/Merchant%20API.html
+[1]: http://www.elastosdma.org/apidoc/AssetManagement%20API.html
+[2]: http://www.elastosdma.org/apidoc/Merchant%20API.html
 
-[3]: http://www.elastosdma.org/api/Passport%20API.html
-[4]: http://www.elastosdma.org/api/Storage%20API.html
-[5]: http://www.elastosdma.org/api/Utility%20API.html
-[6]: http://www.elastosdma.org/api/Wallet%20API.html
-[7]: http://www.elastosdma.org/api/Payment%20API.html
-[8]: http://www.elastosdma.org/api/Message%20API.html
+[3]: http://www.elastosdma.org/apidoc/Passport%20API.html
+[4]: http://www.elastosdma.org/apidoc/Storage%20API.html
+[5]: http://www.elastosdma.org/apidoc/Utility%20API.html
+[6]: http://www.elastosdma.org/apidoc/Wallet%20API.html
+[7]: http://www.elastosdma.org/apidoc/Payment%20API.html
+[8]: http://www.elastosdma.org/apidoc/Message%20API.html
 
 ## 四、常见问题
 
