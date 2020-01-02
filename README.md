@@ -726,7 +726,7 @@ let reult = charge.mintWithArrayGas(privateKey : privateKey,assetAddress : contr
  -  1.5.[ Utility（工具）][5]
  -  1.6.[ Wallet（钱包）][6]
  -  1.7.[ Payment（支付）][7]
- -  1.8. [Message（消息）][8]
+ -  1.8.[Message（消息）][8]
  
 [1]: http://www.elastosdma.org/apidoc/AssetManagement%20API.html
 [2]: http://www.elastosdma.org/apidoc/Merchant%20API.html
