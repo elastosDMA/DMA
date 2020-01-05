@@ -389,25 +389,19 @@ Storage模块基于ipfs实现
     
     // 添加下面的内容
     api 'org.elastos:carrier:5.4.0'
-        
     implementation 'org.elastos:ElastosSdkWallet:v0.1.20@aar'
-
     api 'org.web3j:core:3.3.1-android'
-    
-    api ('org.elastos:dma-utility:1.1.4-eth-beta'){
-    
-    exclude group: 'org.web3j'
-    
-    exclude group: 'org.bouncycastle'
-    
-    }
-    
-    implementation(name: 'Elastos.DMA.Base1.0.0', ext: 'aar')
-    
-    implementation(name: 'Elastos.DMA.Service1.0.0', ext: 'aar')
-    
-    implementation(name: 'Elastos.DMA.Message1..0.0', ext: 'aar')
-    
+	api(name: 'dma_assetmanagement_common1.0', ext: 'aar')
+    api(name: 'dma_config_sf1.0', ext: 'aar')
+    api(name: 'dma_merchant_sf1.0', ext: 'aar')
+    api(name: 'dma_passport_common1.0', ext: 'aar')
+    api(name: 'dma_payment_sf1.0', ext: 'aar')
+    api(name: 'dma_storage_sf1.0', ext: 'aar')
+    api(name: 'dma_wallet_common1.0', ext: 'aar')
+    api(name: 'dma_node_sf1.0', ext: 'aar')
+    api(name: 'dma_utility_common1.0', ext: 'aar')
+    api(name: 'dma_message_common1.0', ext: 'aar')
+    api(name: 'dma_ticket_sf1.0', ext: 'aar')
         // ... 其他依赖项
     }
 至此，DMA SDK 开发资源导入完成。
